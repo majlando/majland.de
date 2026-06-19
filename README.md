@@ -34,11 +34,11 @@ src/
 index.html     Shell (header, footer); main#app is filled per page
 scripts/
   prerender.mjs  Post-build SSG: writes one static page per language × route
-  og-images.mjs  Generates a branded OG image per page × language (satori → resvg)
+  og-images.mjs  Generates all brand rasters — app icons, per-page OG cards + fallback (satori → resvg)
   check-i18n.mjs Fails the build if any string is missing en/de/da
   check-links.mjs Pings every course/reference URL; flags dead links
   fonts/         Inter (latin subset, OFL) — bundled so OG text renders in CI
-public/        Copied as-is: favicon, icons, OG fallback, robots.txt, manifest
+public/        Copied as-is: favicon (theme-aware SVG), robots.txt, manifest
 ```
 
 ### URLs

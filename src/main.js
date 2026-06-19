@@ -14,6 +14,7 @@ import {
   homeURL,
   pathURL,
   pathById,
+  countDone,
   pageTitle,
   tr,
   esc,
@@ -54,11 +55,6 @@ import {
   function saveProgress() {
     write('mjl-progress', JSON.stringify(Array.from(progress)));
   }
-  function doneFor(p) {
-    var n = 0;
-    for (var i = 0; i < p.steps.length; i++) if (progress.has(p.id + ':' + i)) n++;
-    return n;
-  }
 
   function ctx() {
     return { base: BASE, lang: lang, progress: progress };
@@ -92,14 +88,14 @@ import {
     if (currentRoute.type !== 'path') return;
     var p = pathById(currentRoute.id);
     var btn = app.querySelector('[data-reset]');
-    if (p && btn) btn.hidden = doneFor(p) === 0;
+    if (p && btn) btn.hidden = countDone(p, progress) === 0;
   }
   /* The path a returning visitor is most likely to resume: the one
      they're closest to finishing (has progress, but isn't complete). */
   function pickResume() {
     var best = null;
     SITE.PATHS.forEach(function (p) {
-      var done = doneFor(p),
+      var done = countDone(p, progress),
         total = p.steps.length;
       if (done > 0 && done < total && (!best || done > best.done)) {
         best = { p: p, done: done, total: total };
@@ -235,7 +231,7 @@ import {
     if (currentRoute.type === 'path') {
       var p = pathById(currentRoute.id);
       if (p) {
-        var done = doneFor(p),
+        var done = countDone(p, progress),
           pct = Math.round((done / p.steps.length) * 100);
         var bar = app.querySelector('.pprogress__bar span');
         if (bar) bar.style.width = pct + '%';

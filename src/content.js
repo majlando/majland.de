@@ -19,12 +19,17 @@ export const SITE = (function () {
     nav_reference: { en: 'Reference', de: 'Referenz', da: 'Referencer' },
     nav_method: { en: 'How to learn', de: 'So lernst du', da: 'Sådan lærer du' },
     skip: { en: 'Skip to content', de: 'Zum Inhalt springen', da: 'Spring til indhold' },
-    lang_label: { en: 'Language', de: 'Sprache', da: 'Sprog' },
 
     hero_eyebrow: {
       en: 'A free learning hub · majland.de',
       de: 'Kostenloser Lern-Hub · majland.de',
       da: 'Gratis læringshub · majland.de',
+    },
+    // Eyebrow on the generated home social card (scripts/og-images.mjs).
+    og_home_eyebrow: {
+      en: 'Free learning hub',
+      de: 'Kostenloser Lern-Hub',
+      da: 'Gratis læringshub',
     },
     hero_title: {
       en: 'Curated paths to learn software.',

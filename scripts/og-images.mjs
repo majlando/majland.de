@@ -1,8 +1,11 @@
 /* ============================================================
-   majland.de — Open Graph image generator (build-time SSG)
-   Renders one branded 1200×630 PNG per page × language into
-   dist/og/, so a shared link to (say) the German Full-Stack path
-   previews as its own card — accent colour, icon, localized title.
+   majland.de — brand image generator (build-time SSG)
+   Renders one branded 1200×630 Open Graph PNG per page × language
+   into dist/og/, so a shared link to (say) the German Full-Stack
+   path previews as its own card — accent colour, icon, localized
+   title. Also emits the site-wide OG fallback (dist/og-image.png)
+   and the PWA app icons (dist/icon-192.png, dist/icon-512.png), all
+   from one source so they can never drift out of sync.
 
    Pipeline: satori (HTML/CSS → SVG) → resvg (SVG → PNG). Fonts are
    bundled (Inter, latin subset) so text renders identically in CI.
@@ -33,6 +36,20 @@ const ACCENTS = {
   pink: '#f08fc4',
 };
 const DEFAULT_ACCENT = '#8b93ff';
+
+/* App-icon mark: a full-bleed dark tile + the gradient braces, with no border
+   or rounding so it sits cleanly inside any maskable shape. (public/favicon.svg
+   is the theme-aware SVG version of the same mark, for the browser tab.) */
+const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6d6cff"/><stop offset="1" stop-color="#22d3ee"/>
+  </linearGradient></defs>
+  <rect width="64" height="64" fill="${BG}"/>
+  <g fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M26 16c-6 0-7 4-7 8s0 7-5 8c5 1 5 4 5 8s1 8 7 8"/>
+    <path d="M38 16c6 0 7 4 7 8s0 7 5 8c-5 1-5 4-5 8s-1 8-7 8"/>
+  </g>
+</svg>`;
 
 function hexToRgba(hex, a) {
   const n = parseInt(hex.slice(1), 16);
@@ -211,15 +228,10 @@ function model(route, lang) {
       sub: tr(p.tagline, lang),
     };
   }
-  const HOME_EYEBROW = {
-    en: 'Free learning hub',
-    de: 'Kostenloser Lern-Hub',
-    da: 'Gratis læringshub',
-  };
   return {
     accent: DEFAULT_ACCENT,
     iconName: null,
-    eyebrow: HOME_EYEBROW[lang] || HOME_EYEBROW.en,
+    eyebrow: tr(U.og_home_eyebrow, lang),
     title: tr(U.hero_title, lang),
     sub: tr(U.tagline, lang),
   };
@@ -234,7 +246,16 @@ for (const route of allRoutes()) {
     const svg = await satori(card(model(route, lang)), { width: 1200, height: 630, fonts: FONTS });
     const png = new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } }).render().asPng();
     writeFileSync(join(OG_DIR, `${slug}-${lang}.png`), png);
+    // The English home card doubles as the site-wide fallback (index.html default).
+    if (slug === 'home' && lang === 'en') writeFileSync(join(DIST, 'og-image.png'), png);
     count++;
   }
 }
-console.log(`✓ generated ${count} Open Graph images → dist/og/`);
+
+/* ---------- app icons (same mark, rasterized straight from SVG) ---------- */
+for (const size of [192, 512]) {
+  const icon = new Resvg(ICON_SVG, { fitTo: { mode: 'width', value: size } }).render().asPng();
+  writeFileSync(join(DIST, `icon-${size}.png`), icon);
+}
+
+console.log(`✓ generated ${count} OG images + fallback + 2 app icons → dist/`);

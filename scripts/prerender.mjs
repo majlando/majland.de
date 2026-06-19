@@ -15,7 +15,9 @@ import {
   pageTitle,
   pageDescription,
   homeURL,
+  pathURL,
   pathById,
+  pfx,
   esc,
   tr,
   LANGS,
@@ -34,13 +36,13 @@ const baseMatch = template.match(/(?:src|href)="([^"]*?)assets\//);
 const BASE = baseMatch ? baseMatch[1] : '/';
 
 /* ---------- URL helpers (canonical = production origin) ---------- */
-const seg = (lang) => (lang === 'en' ? '' : lang + '/');
 function canonical(route, lang) {
-  const s = seg(lang);
-  return route.type === 'path' ? `${ORIGIN}/${s}path/${route.id}/` : `${ORIGIN}/${s}`;
+  return route.type === 'path'
+    ? pathURL(ORIGIN + '/', lang, route.id)
+    : homeURL(ORIGIN + '/', lang);
 }
 function outFile(route, lang) {
-  const s = seg(lang);
+  const s = pfx(lang);
   return route.type === 'path'
     ? join(DIST, s, 'path', route.id, 'index.html')
     : join(DIST, s, 'index.html');
@@ -114,17 +116,17 @@ function jsonLd(route, lang) {
 function breadcrumbLd(route, lang) {
   if (route.type !== 'path') return null;
   const p = pathById(route.id);
-  const s = seg(lang);
+  const home = homeURL(ORIGIN + '/', lang);
   const data = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'majland.de', item: `${ORIGIN}/${s}` },
+      { '@type': 'ListItem', position: 1, name: 'majland.de', item: home },
       {
         '@type': 'ListItem',
         position: 2,
         name: tr(SITE.UI.nav_paths, lang),
-        item: `${ORIGIN}/${s}#choose`,
+        item: home + '#choose',
       },
       { '@type': 'ListItem', position: 3, name: tr(p.title, lang), item: canonical(route, lang) },
     ],
@@ -140,8 +142,7 @@ function rewriteHeader(html, route, lang) {
     (_, nav) => `data-nav="${nav}" href="${navHref(nav)}"`
   );
   html = html.replace(/<a data-langlink="(en|de|da)"[^>]*>/g, (_, L) => {
-    const s = seg(L);
-    const href = route.type === 'path' ? `${BASE}${s}path/${route.id}/` : `${BASE}${s}`;
+    const href = route.type === 'path' ? pathURL(BASE, L, route.id) : homeURL(BASE, L);
     return `<a data-langlink="${L}" href="${href}"${L === lang ? ' aria-current="true"' : ''}>`;
   });
   return html;

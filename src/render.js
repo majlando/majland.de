@@ -21,7 +21,7 @@ export function tr(o, lang) {
 }
 
 /* ---------- URLs (real paths; English at the root) ---------- */
-function pfx(lang) {
+export function pfx(lang) {
   return lang === 'en' ? '' : lang + '/';
 }
 export function homeURL(base, lang) {
@@ -59,7 +59,7 @@ export function allRoutes() {
   return routes;
 }
 
-function countDone(p, progress) {
+export function countDone(p, progress) {
   var n = 0;
   for (var i = 0; i < p.steps.length; i++) if (progress && progress.has(p.id + ':' + i)) n++;
   return n;
