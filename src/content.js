@@ -44,6 +44,13 @@ export const SITE = (function () {
       de: 'Fünf fokussierte Lernwege. Fang an, wo du willst – oder folge der empfohlenen Reihenfolge weiter unten.',
       da: 'Fem fokuserede forløb. Begynd hvor du vil – eller følg den anbefalede rækkefølge længere nede.',
     },
+    continue_title: {
+      en: 'Pick up where you left off',
+      de: 'Mach da weiter, wo du aufgehört hast',
+      da: 'Fortsæt, hvor du slap',
+    },
+    continue_cta: { en: 'Continue', de: 'Weiter', da: 'Fortsæt' },
+
     new_here: { en: 'New here?', de: 'Neu hier?', da: 'Ny her?' },
     new_here_text: {
       en: 'A good order is Tools → Foundations → The Web → Full-Stack → AI. But any path is a fine place to begin.',

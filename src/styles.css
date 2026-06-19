@@ -597,6 +597,108 @@ a:hover {
   transition: transform 0.15s var(--ease);
 }
 
+/* Continue / resume card (home, returning visitors) */
+.resume {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--pa) 38%, var(--border));
+  border-radius: var(--radius);
+  padding: 1.05rem 1.3rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color 0.2s,
+    transform 0.2s var(--ease),
+    box-shadow 0.2s;
+}
+.resume:hover {
+  border-color: var(--pa);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.resume__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+  flex-shrink: 0;
+  color: var(--pa);
+  background: color-mix(in srgb, var(--pa) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pa) 30%, transparent);
+}
+.resume__icon svg {
+  width: 26px;
+  height: 26px;
+}
+.resume__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+.resume__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pa);
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+.resume__title {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+.resume__next {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resume__side {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-shrink: 0;
+}
+.resume__count {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.resume__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 650;
+  font-size: 0.95rem;
+  color: var(--pa);
+  white-space: nowrap;
+}
+.resume__cta svg {
+  transition: transform 0.15s var(--ease);
+}
+.resume:hover .resume__cta svg {
+  transform: translateX(3px);
+}
+@media (max-width: 560px) {
+  .resume {
+    flex-wrap: wrap;
+  }
+  .resume__side {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
 /* New-here hint */
 .newhere {
   display: flex;

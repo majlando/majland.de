@@ -6,7 +6,18 @@
    ============================================================ */
 import './styles.css';
 import { SITE } from './content.js';
-import { renderApp, parseRoute, routeURL, homeURL, pathById, pageTitle } from './render.js';
+import { ICONS } from './icons.js';
+import {
+  renderApp,
+  parseRoute,
+  routeURL,
+  homeURL,
+  pathURL,
+  pathById,
+  pageTitle,
+  tr,
+  esc,
+} from './render.js';
 
 (function () {
   'use strict';
@@ -83,10 +94,75 @@ import { renderApp, parseRoute, routeURL, homeURL, pathById, pageTitle } from '.
     var btn = app.querySelector('[data-reset]');
     if (p && btn) btn.hidden = doneFor(p) === 0;
   }
+  /* The path a returning visitor is most likely to resume: the one
+     they're closest to finishing (has progress, but isn't complete). */
+  function pickResume() {
+    var best = null;
+    SITE.PATHS.forEach(function (p) {
+      var done = doneFor(p),
+        total = p.steps.length;
+      if (done > 0 && done < total && (!best || done > best.done)) {
+        best = { p: p, done: done, total: total };
+      }
+    });
+    if (!best) return null;
+    for (var i = 0; i < best.p.steps.length; i++) {
+      if (!progress.has(best.p.id + ':' + i)) {
+        best.next = best.p.steps[i];
+        break;
+      }
+    }
+    return best;
+  }
+
+  /* On the home page, offer to resume (and hide the "new here" hint). */
+  function renderContinue() {
+    if (currentRoute.type !== 'home') return;
+    var t = pickResume();
+    if (!t) return;
+    var wrap = app.querySelector('#choose .wrap');
+    var head = wrap && wrap.querySelector('.section__head');
+    if (!head) return;
+    var p = t.p;
+    var html =
+      '<a class="resume" data-accent="' +
+      p.accent +
+      '" href="' +
+      pathURL(BASE, lang, p.id) +
+      '">' +
+      '<span class="resume__icon">' +
+      ICONS[p.icon] +
+      '</span>' +
+      '<span class="resume__body">' +
+      '<span class="resume__label">' +
+      esc(tr(SITE.UI.continue_title, lang)) +
+      '</span>' +
+      '<span class="resume__title">' +
+      esc(tr(p.title, lang)) +
+      '</span>' +
+      '<span class="resume__next">' +
+      esc(tr(SITE.UI.next_up, lang)) +
+      ': ' +
+      esc(t.next.name) +
+      '</span></span>' +
+      '<span class="resume__side"><span class="resume__count">' +
+      t.done +
+      '/' +
+      t.total +
+      '</span><span class="resume__cta">' +
+      esc(tr(SITE.UI.continue_cta, lang)) +
+      ICONS.arrow +
+      '</span></span></a>';
+    head.insertAdjacentHTML('afterend', html);
+    var newhere = wrap.querySelector('.newhere');
+    if (newhere) newhere.style.display = 'none';
+  }
+
   function render() {
     app.innerHTML = '<div class="view">' + renderApp(ctx(), currentRoute) + '</div>';
     applyStatic();
     syncReset();
+    renderContinue();
   }
 
   /* ---------- navigation ---------- */
