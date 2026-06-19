@@ -1,0 +1,215 @@
+/* ============================================================
+   majland.de — static pre-render (SSG)
+   Runs after `vite build`. Reads the built dist/index.html as a
+   template and writes one static HTML file per language × page,
+   each with full content, per-page meta, canonical, hreflang,
+   Open Graph and JSON-LD. Also writes sitemap.xml and 404.html.
+   ============================================================ */
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { SITE } from '../src/content.js';
+import {
+  renderApp,
+  allRoutes,
+  pageTitle,
+  pageDescription,
+  homeURL,
+  pathById,
+  esc,
+  tr,
+  LANGS,
+  LOCALE,
+} from '../src/render.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DIST = join(__dirname, '..', 'dist');
+const ORIGIN = 'https://majland.de'; // canonical production origin (always)
+
+const template = readFileSync(join(DIST, 'index.html'), 'utf8');
+
+// Derive the deploy base from a built asset reference (e.g. "/" or "/majland.de/").
+const baseMatch = template.match(/(?:src|href)="([^"]*?)assets\//);
+const BASE = baseMatch ? baseMatch[1] : '/';
+
+/* ---------- URL helpers (canonical = production origin) ---------- */
+const seg = (lang) => (lang === 'en' ? '' : lang + '/');
+function canonical(route, lang) {
+  const s = seg(lang);
+  return route.type === 'path' ? `${ORIGIN}/${s}path/${route.id}/` : `${ORIGIN}/${s}`;
+}
+function outFile(route, lang) {
+  const s = seg(lang);
+  return route.type === 'path'
+    ? join(DIST, s, 'path', route.id, 'index.html')
+    : join(DIST, s, 'index.html');
+}
+function clamp(str, n) {
+  str = String(str).replace(/\s+/g, ' ').trim();
+  return str.length > n ? str.slice(0, n - 1).trimEnd() + '…' : str;
+}
+
+/* ---------- JSON-LD ---------- */
+function jsonLd(route, lang) {
+  let data;
+  if (route.type === 'path') {
+    const p = pathById(route.id);
+    data = {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: tr(p.title, lang),
+      description: clamp(tr(p.tagline, lang) + ' ' + tr(p.intro, lang), 300),
+      url: canonical(route, lang),
+      inLanguage: lang,
+      numberOfItems: p.steps.length,
+      itemListElement: p.steps.map((s, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: s.name,
+        url: s.url,
+      })),
+    };
+  } else {
+    data = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          name: 'majland.de',
+          url: ORIGIN + '/',
+          description: clamp(tr(SITE.UI.hero_lead, lang), 300),
+          inLanguage: lang,
+        },
+        {
+          '@type': 'ItemList',
+          name: tr(SITE.UI.choose_title, lang),
+          itemListElement: SITE.PATHS.map((p, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: tr(p.title, lang),
+            url: canonical({ type: 'path', id: p.id }, lang),
+          })),
+        },
+      ],
+    };
+  }
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}
+
+/* ---------- header link rewrites (so no-JS pages link correctly) ---------- */
+function rewriteHeader(html, route, lang) {
+  const navHref = (nav) => (nav === 'home' ? homeURL(BASE, lang) : homeURL(BASE, lang) + '#' + nav);
+  html = html.replace(
+    /data-nav="(home|reference|method)" href="[^"]*"/g,
+    (_, nav) => `data-nav="${nav}" href="${navHref(nav)}"`
+  );
+  html = html.replace(/<a data-langlink="(en|de|da)"[^>]*>/g, (_, L) => {
+    const s = seg(L);
+    const href = route.type === 'path' ? `${BASE}${s}path/${route.id}/` : `${BASE}${s}`;
+    return `<a data-langlink="${L}" href="${href}"${L === lang ? ' aria-current="true"' : ''}>`;
+  });
+  return html;
+}
+
+/* ---------- build one page ---------- */
+function buildPage(route, lang) {
+  const title = pageTitle(route, lang);
+  const desc = clamp(pageDescription(route, lang), 165);
+  const canon = canonical(route, lang);
+  const appHtml = renderApp({ base: BASE, lang, progress: null }, route);
+
+  let html = template;
+
+  // <html> language
+  html = html.replace(/<html[^>]*>/, `<html lang="${lang}" data-theme="dark" data-lang="${lang}">`);
+  // title + description
+  html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(title)}</title>`);
+  html = html.replace(
+    /<meta\s+name="description"[\s\S]*?\/>/,
+    `<meta name="description" content="${esc(desc)}" />`
+  );
+  // canonical + Open Graph
+  html = html.replace(/<link rel="canonical"[^>]*\/>/, `<link rel="canonical" href="${canon}" />`);
+  html = html.replace(
+    /<meta property="og:title"[^>]*\/>/,
+    `<meta property="og:title" content="${esc(title)}" />`
+  );
+  html = html.replace(
+    /<meta\s+property="og:description"[\s\S]*?\/>/,
+    `<meta property="og:description" content="${esc(desc)}" />`
+  );
+  html = html.replace(
+    /<meta property="og:url"[^>]*\/>/,
+    `<meta property="og:url" content="${canon}" />`
+  );
+
+  // inject hreflang + og:locale + JSON-LD before </head>
+  const inject = [
+    `<meta property="og:locale" content="${LOCALE[lang]}" />`,
+    ...LANGS.filter((l) => l !== lang).map(
+      (l) => `<meta property="og:locale:alternate" content="${LOCALE[l]}" />`
+    ),
+    ...LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${canonical(route, l)}" />`),
+    `<link rel="alternate" hreflang="x-default" href="${canonical(route, 'en')}" />`,
+    `<script type="application/ld+json">${jsonLd(route, lang)}</script>`,
+  ].join('\n    ');
+  html = html.replace('</head>', '    ' + inject + '\n  </head>');
+
+  // header links + the app content
+  html = rewriteHeader(html, route, lang);
+  html = html.replace(
+    /<main id="app"[^>]*>[\s\S]*?<\/main>/,
+    `<main id="app" tabindex="-1"><div class="view">${appHtml}</div></main>`
+  );
+  return html;
+}
+
+/* ---------- write all pages ---------- */
+const routes = allRoutes();
+let count = 0;
+for (const route of routes) {
+  for (const lang of LANGS) {
+    const file = outFile(route, lang);
+    mkdirSync(dirname(file), { recursive: true });
+    writeFileSync(file, buildPage(route, lang));
+    count++;
+  }
+}
+
+/* ---------- sitemap.xml (multilingual, with hreflang alternates) ---------- */
+const urls = routes
+  .flatMap((route) =>
+    LANGS.map((lang) => {
+      const alts = LANGS.map(
+        (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${canonical(route, l)}" />`
+      )
+        .concat(
+          `    <xhtml:link rel="alternate" hreflang="x-default" href="${canonical(route, 'en')}" />`
+        )
+        .join('\n');
+      return `  <url>\n    <loc>${canonical(route, lang)}</loc>\n${alts}\n  </url>`;
+    })
+  )
+  .join('\n');
+const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`;
+writeFileSync(join(DIST, 'sitemap.xml'), sitemap);
+
+/* ---------- 404.html (static, noindex, SPA-fallback friendly) ---------- */
+let notFound = template
+  .replace(/<html[^>]*>/, '<html lang="en" data-theme="dark" data-lang="en">')
+  .replace(/<title>[\s\S]*?<\/title>/, '<title>Page not found · majland.de</title>')
+  .replace('</head>', '    <meta name="robots" content="noindex" />\n  </head>')
+  .replace(/<script type="module"[^>]*><\/script>/, '')
+  .replace(
+    /<main id="app"[^>]*>[\s\S]*?<\/main>/,
+    `<main id="app"><section class="section"><div class="wrap" style="text-align:center;padding:4rem 0">` +
+      `<p class="eyebrow">404</p><h1>Page not found</h1>` +
+      `<p class="lead">That page doesn’t exist (yet). Head back to the start.</p>` +
+      `<p style="margin-top:1.5rem"><a class="btn btn--primary" href="${BASE}">Go home</a></p>` +
+      `</div></section></main>`
+  );
+writeFileSync(join(DIST, '404.html'), notFound);
+
+console.log(
+  `✓ pre-rendered ${count} pages (base "${BASE}"), sitemap (${routes.length * LANGS.length} urls) + 404.html`
+);

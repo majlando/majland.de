@@ -7,7 +7,8 @@
   "homepage": "https://majland.de/",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run prerender",
+    "prerender": "node scripts/prerender.mjs",
     "preview": "vite preview",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

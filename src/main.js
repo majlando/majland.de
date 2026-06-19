@@ -1,23 +1,22 @@
 /* ============================================================
-   majland.de — Learning hub
-   Vanilla SPA. Renders SITE (content.js) in the active
-   language; hash routing; local progress + theme.
-   Bundled with Vite — no framework, just modules.
+   majland.de — Learning hub (client)
+   Enhances the pre-rendered static pages: history routing,
+   instant navigation, local progress, theme, language.
+   Bundled with Vite. Pure rendering lives in render.js.
    ============================================================ */
 import './styles.css';
 import { SITE } from './content.js';
-import { ICONS } from './icons.js';
+import { renderApp, parseRoute, routeURL, homeURL, pathById, pageTitle } from './render.js';
 
 (function () {
   'use strict';
 
-  var U = SITE.UI;
+  var BASE = import.meta.env.BASE_URL || '/';
   var app = document.getElementById('app');
   var lang = document.documentElement.dataset.lang || 'en';
-  var langBtns = Array.prototype.slice.call(document.querySelectorAll('#langSwitch button'));
-  var rendered = { view: null, lang: null };
+  var currentRoute = parseRoute(location.pathname, BASE);
 
-  /* ---------- storage helpers ---------- */
+  /* ---------- storage ---------- */
   function read(k) {
     try {
       return localStorage.getItem(k);
@@ -34,17 +33,6 @@ import { ICONS } from './icons.js';
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
-  /* ---------- i18n + escaping ---------- */
-  function tr(o) {
-    return (o && (o[lang] || o.en)) || '';
-  }
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-    });
-  }
-
-  /* ---------- progress ---------- */
   var progress = (function () {
     try {
       return new Set(JSON.parse(read('mjl-progress') || '[]'));
@@ -55,360 +43,117 @@ import { ICONS } from './icons.js';
   function saveProgress() {
     write('mjl-progress', JSON.stringify(Array.from(progress)));
   }
-  function countDone(p) {
+  function doneFor(p) {
     var n = 0;
     for (var i = 0; i < p.steps.length; i++) if (progress.has(p.id + ':' + i)) n++;
     return n;
   }
-  function pathById(id) {
-    for (var i = 0; i < SITE.PATHS.length; i++) if (SITE.PATHS[i].id === id) return SITE.PATHS[i];
-    return null;
+
+  function ctx() {
+    return { base: BASE, lang: lang, progress: progress };
   }
 
-  /* ---------- icons ---------- */
-  var I = ICONS;
-
-  /* ---------- render: home ---------- */
-  function renderHome() {
-    var cards = SITE.PATHS.map(function (p) {
-      var done = countDone(p),
-        total = p.steps.length,
-        pct = Math.round((done / total) * 100);
-      return (
-        '<a class="pcard" data-accent="' +
-        p.accent +
-        '" href="#/path/' +
-        p.id +
-        '">' +
-        '<span class="pcard__icon">' +
-        I[p.icon] +
-        '</span>' +
-        '<h3 class="pcard__title">' +
-        esc(tr(p.title)) +
-        '</h3>' +
-        '<p class="pcard__tag">' +
-        esc(tr(p.tagline)) +
-        '</p>' +
-        '<div class="pcard__meta"><span class="lvl">' +
-        esc(tr(p.level)) +
-        '</span><span>' +
-        total +
-        ' ' +
-        esc(tr(U.resources_word)) +
-        '</span></div>' +
-        '<div class="pcard__bar"><span style="width:' +
-        pct +
-        '%"></span></div>' +
-        '<div class="pcard__foot"><span class="pcard__count">' +
-        done +
-        '/' +
-        total +
-        ' ' +
-        esc(tr(U.done_count)) +
-        '</span>' +
-        '<span class="pcard__go">' +
-        esc(tr(U.view_path)) +
-        I.arrow +
-        '</span></div>' +
-        '</a>'
-      );
-    }).join('');
-
-    var refs = SITE.REFERENCES.map(function (r) {
-      return (
-        '<a class="ref" href="' +
-        esc(r.url) +
-        '" target="_blank" rel="noopener noreferrer">' +
-        '<strong>' +
-        esc(r.name) +
-        I.ext +
-        '</strong>' +
-        '<span>' +
-        esc(tr(r.d)) +
-        '</span>' +
-        '<span class="ref__host">' +
-        esc(r.host) +
-        '</span></a>'
-      );
-    }).join('');
-
-    var tips = SITE.TIPS.map(function (t) {
-      return '<li><strong>' + esc(tr(t.t)) + '</strong>' + esc(tr(t.d)) + '</li>';
-    }).join('');
-
-    return (
-      '' +
-      '<section class="hero"><div class="hero__glow" aria-hidden="true"></div><div class="wrap hero__inner">' +
-      '<p class="eyebrow">' +
-      esc(tr(U.hero_eyebrow)) +
-      '</p>' +
-      '<h1>' +
-      esc(tr(U.hero_title)) +
-      '</h1>' +
-      '<p class="hero__lead">' +
-      esc(tr(U.hero_lead)) +
-      '</p>' +
-      '<div class="hero__actions"><a class="btn btn--primary" href="#choose">' +
-      esc(tr(U.hero_cta)) +
-      I.arrow +
-      '</a></div>' +
-      '</div></section>' +
-      '<section id="choose" class="section"><div class="wrap">' +
-      '<header class="section__head"><h2>' +
-      esc(tr(U.choose_title)) +
-      '</h2><p class="lead">' +
-      esc(tr(U.choose_lead)) +
-      '</p></header>' +
-      '<div class="newhere">' +
-      I.compass +
-      '<p><strong>' +
-      esc(tr(U.new_here)) +
-      '</strong> ' +
-      esc(tr(U.new_here_text)) +
-      '</p></div>' +
-      '<div class="paths-grid">' +
-      cards +
-      '</div>' +
-      '</div></section>' +
-      '<section id="reference" class="section section--alt"><div class="wrap">' +
-      '<header class="section__head"><p class="eyebrow">' +
-      esc(tr(U.nav_reference)) +
-      '</p><h2>' +
-      esc(tr(U.reference_title)) +
-      '</h2><p class="lead">' +
-      esc(tr(U.reference_lead)) +
-      '</p></header>' +
-      '<div class="refs">' +
-      refs +
-      '</div>' +
-      '</div></section>' +
-      '<section id="method" class="section"><div class="wrap">' +
-      '<header class="section__head"><p class="eyebrow">' +
-      esc(tr(U.nav_method)) +
-      '</p><h2>' +
-      esc(tr(U.method_title)) +
-      '</h2><p class="lead">' +
-      esc(tr(U.method_lead)) +
-      '</p></header>' +
-      '<ul class="tips">' +
-      tips +
-      '</ul>' +
-      '</div></section>'
-    );
+  /* ---------- header links + i18n ---------- */
+  function navHref(nav, l) {
+    return nav === 'home' ? homeURL(BASE, l) : homeURL(BASE, l) + '#' + nav;
   }
-
-  /* ---------- render: a single path ---------- */
-  function renderPath(id) {
-    var p = pathById(id);
-    if (!p) return renderHome();
-    var done = countDone(p),
-      total = p.steps.length,
-      pct = Math.round((done / total) * 100);
-
-    var steps = p.steps
-      .map(function (s, i) {
-        var sid = p.id + ':' + i,
-          isDone = progress.has(sid);
-        var tagText = s.type === 'reference' ? 'REF' : esc(tr(U.step_word)) + ' ' + (i + 1);
-        return (
-          '<li class="step' +
-          (isDone ? ' done' : '') +
-          '">' +
-          '<span class="step__badge">' +
-          (i + 1) +
-          '<span class="chk">' +
-          I.check +
-          '</span></span>' +
-          '<div class="step__card">' +
-          '<div class="step__top"><span class="tag tag--' +
-          s.type +
-          '">' +
-          tagText +
-          '</span><span class="step__provider">' +
-          esc(s.provider) +
-          '</span></div>' +
-          '<p class="step__name"><a href="' +
-          esc(s.url) +
-          '" target="_blank" rel="noopener noreferrer">' +
-          esc(s.name) +
-          I.ext +
-          '</a></p>' +
-          '<p class="step__blurb">' +
-          esc(tr(s.blurb)) +
-          '</p>' +
-          '<label class="mark"><input type="checkbox" data-step="' +
-          sid +
-          '"' +
-          (isDone ? ' checked' : '') +
-          ' /> <span>' +
-          esc(tr(U.mark_done)) +
-          '</span></label>' +
-          '</div></li>'
-        );
-      })
-      .join('');
-
-    var next = p.next ? pathById(p.next) : null;
-    var nextHtml = next
-      ? '<a class="nextup" href="#/path/' +
-        next.id +
-        '"><span><span class="nextup__l">' +
-        esc(tr(U.next_up)) +
-        '</span><span class="nextup__t">' +
-        esc(tr(next.title)) +
-        '</span></span><span class="nextup__arrow">' +
-        I.arrow +
-        '</span></a>'
-      : '';
-
-    return (
-      '<div class="pathview" data-accent="' +
-      p.accent +
-      '"><div class="wrap wrap--narrow">' +
-      '<a class="backlink" href="#/">' +
-      I.arrowL +
-      esc(tr(U.back_to_paths)) +
-      '</a>' +
-      '<div class="phead"><span class="phead__icon">' +
-      I[p.icon] +
-      '</span><div>' +
-      '<p class="phead__eyebrow">' +
-      esc(tr(U.path_word)) +
-      '</p>' +
-      '<h1>' +
-      esc(tr(p.title)) +
-      '</h1><p class="phead__tag">' +
-      esc(tr(p.tagline)) +
-      '</p></div></div>' +
-      '<div class="pmeta"><span><b>' +
-      esc(tr(U.level_label)) +
-      ':</b> ' +
-      esc(tr(p.level)) +
-      '</span>' +
-      '<span><b>' +
-      esc(tr(U.who_for)) +
-      ':</b> ' +
-      esc(tr(p.who)) +
-      '</span></div>' +
-      '<p class="pintro">' +
-      esc(tr(p.intro)) +
-      '</p>' +
-      '<div class="pprogress"><div class="pprogress__bar"><span style="width:' +
-      pct +
-      '%"></span></div>' +
-      '<span class="pprogress__txt"><b>' +
-      done +
-      '</b>/' +
-      total +
-      ' ' +
-      esc(tr(U.done_count)) +
-      '</span></div>' +
-      '<h2 class="psteps-title">' +
-      esc(tr(U.in_this_path)) +
-      '</h2>' +
-      '<ol class="steps">' +
-      steps +
-      '</ol>' +
-      '<div class="outcome">' +
-      I.check +
-      '<p><b>' +
-      esc(tr(U.outcome_label)) +
-      ':</b> ' +
-      esc(tr(p.outcome)) +
-      '</p></div>' +
-      nextHtml +
-      '</div></div>'
-    );
-  }
-
-  /* ---------- static header/footer i18n ---------- */
   function applyStatic() {
-    var nodes = document.querySelectorAll('[data-i18n]');
-    for (var i = 0; i < nodes.length; i++) {
-      var k = nodes[i].getAttribute('data-i18n');
-      if (U[k]) nodes[i].textContent = tr(U[k]);
-    }
-    langBtns.forEach(function (b) {
-      b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
-    });
     document.documentElement.lang = lang;
+    document.documentElement.dataset.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var k = el.getAttribute('data-i18n');
+      if (SITE.UI[k]) el.textContent = SITE.UI[k][lang] || SITE.UI[k].en;
+    });
+    document.querySelectorAll('[data-nav]').forEach(function (a) {
+      a.setAttribute('href', navHref(a.getAttribute('data-nav'), lang));
+    });
+    document.querySelectorAll('[data-langlink]').forEach(function (a) {
+      var l = a.getAttribute('data-langlink');
+      a.setAttribute('href', routeURL(BASE, currentRoute, l));
+      if (l === lang) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+    document.title = pageTitle(currentRoute, lang);
   }
 
-  /* ---------- render dispatch ---------- */
-  function renderView(view, html) {
-    if (rendered.view === view && rendered.lang === lang) return false;
-    app.innerHTML = '<div class="view">' + html + '</div>';
-    rendered.view = view;
-    rendered.lang = lang;
-    return true;
+  /* ---------- render the current route ---------- */
+  function render() {
+    app.innerHTML = '<div class="view">' + renderApp(ctx(), currentRoute) + '</div>';
+    applyStatic();
   }
 
-  function setTitle() {
-    if (rendered.view && rendered.view.indexOf('path:') === 0) {
-      var p = pathById(rendered.view.slice(5));
-      document.title = (p ? tr(p.title) + ' · ' : '') + 'majland.de';
-    } else {
-      document.title = 'majland.de — ' + tr(U.hero_title);
-    }
-  }
-
-  /* ---------- router ---------- */
-  function route() {
-    var h = location.hash || '';
-    if (h.indexOf('#/path/') === 0) {
-      var id = h.slice(7);
-      var changed = renderView('path:' + id, renderPath(id));
-      setTitle();
+  /* ---------- navigation ---------- */
+  function scrollToHash(hash) {
+    if (!hash) {
       window.scrollTo({ top: 0, behavior: 'auto' });
-      if (changed) app.focus({ preventScroll: true });
       return;
     }
-    // home (and its in-page anchors)
-    renderView('home', renderHome());
-    setTitle();
-    var frag = h.charAt(0) === '#' ? h.slice(1) : h;
-    if (frag && frag.charAt(0) !== '/') {
-      var el = document.getElementById(frag);
-      if (el) {
-        el.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' });
-        return;
-      }
-    }
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    var el = document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView({ behavior: reduce() ? 'auto' : 'smooth', block: 'start' });
   }
 
-  /* ---------- live language switch (keeps view + scroll) ---------- */
-  function setLang(l) {
-    if (l === lang) return;
-    lang = l;
-    write('mjl-lang', l);
-    document.documentElement.dataset.lang = l;
-    applyStatic();
-    var y = window.scrollY;
-    if (rendered.view && rendered.view.indexOf('path:') === 0) {
-      app.innerHTML = '<div class="view">' + renderPath(rendered.view.slice(5)) + '</div>';
-    } else {
-      app.innerHTML = '<div class="view">' + renderHome() + '</div>';
+  function go(url, push) {
+    var u = new URL(url, location.origin);
+    var route = parseRoute(u.pathname, BASE);
+    var sameView =
+      route.type === currentRoute.type &&
+      route.id === currentRoute.id &&
+      route.lang === currentRoute.lang;
+
+    if (push) history.pushState({}, '', u.pathname + u.hash);
+    if (!sameView) {
+      currentRoute = route;
+      lang = route.lang;
+      render();
     }
-    rendered.lang = lang;
-    setTitle();
-    window.scrollTo(0, y);
+    if (u.hash) scrollToHash(u.hash);
+    else if (!sameView) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      app.focus({ preventScroll: true });
+    }
   }
 
-  /* ---------- progress interaction (event delegation) ---------- */
+  /* Intercept internal link clicks for instant navigation. */
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)
+      return;
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href');
+    if (!href || a.target === '_blank' || a.hasAttribute('download')) return;
+    if (/^([a-z]+:)?\/\//i.test(href) || href.indexOf('mailto:') === 0) return; // external
+    if (href.charAt(0) === '#') {
+      e.preventDefault();
+      scrollToHash(href);
+      return;
+    }
+    // internal route
+    var langlink = a.getAttribute('data-langlink');
+    if (langlink) {
+      lang = langlink;
+      write('mjl-lang', lang);
+    }
+    e.preventDefault();
+    go(href, true);
+  });
+
+  window.addEventListener('popstate', function () {
+    go(location.pathname + location.hash, false);
+  });
+
+  /* ---------- progress (event delegation) ---------- */
   app.addEventListener('change', function (e) {
     var cb = e.target;
     if (!cb || cb.getAttribute('data-step') == null) return;
-    var id = cb.getAttribute('data-step');
-    if (cb.checked) progress.add(id);
-    else progress.delete(id);
+    if (cb.checked) progress.add(cb.getAttribute('data-step'));
+    else progress.delete(cb.getAttribute('data-step'));
     saveProgress();
     var li = cb.closest('.step');
     if (li) li.classList.toggle('done', cb.checked);
-    if (rendered.view && rendered.view.indexOf('path:') === 0) {
-      var p = pathById(rendered.view.slice(5));
+    if (currentRoute.type === 'path') {
+      var p = pathById(currentRoute.id);
       if (p) {
-        var done = countDone(p),
+        var done = doneFor(p),
           pct = Math.round((done / p.steps.length) * 100);
         var bar = app.querySelector('.pprogress__bar span');
         if (bar) bar.style.width = pct + '%';
@@ -435,13 +180,6 @@ import { ICONS } from './icons.js';
       sync();
     });
   })();
-
-  /* ---------- language buttons ---------- */
-  langBtns.forEach(function (b) {
-    b.addEventListener('click', function () {
-      setLang(b.dataset.lang);
-    });
-  });
 
   /* ---------- scroll progress + year ---------- */
   (function scrollBar() {
@@ -471,8 +209,9 @@ import { ICONS } from './icons.js';
     if (el) el.textContent = String(new Date().getFullYear());
   })();
 
-  /* ---------- boot ---------- */
-  applyStatic();
-  route();
-  window.addEventListener('hashchange', route);
+  /* ---------- boot ----------
+     The page is already pre-rendered for this route; re-render so
+     the visitor's saved progress is reflected, then enhance with
+     instant client-side navigation. */
+  render();
 })();

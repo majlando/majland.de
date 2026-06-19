@@ -362,14 +362,13 @@ a:hover {
   border-radius: 999px;
   padding: 2px;
 }
-.lang button {
+.lang a {
   font: inherit;
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.03em;
   color: var(--text-muted);
-  background: none;
-  border: none;
+  text-decoration: none;
   cursor: pointer;
   padding: 0.32rem 0.55rem;
   border-radius: 999px;
@@ -377,10 +376,10 @@ a:hover {
     color 0.15s,
     background 0.15s;
 }
-.lang button:hover {
+.lang a:hover {
   color: var(--text);
 }
-.lang button[aria-pressed='true'] {
+.lang a[aria-current='true'] {
   background: var(--accent);
   color: #fff;
 }
@@ -1084,7 +1083,7 @@ a:hover {
   }
 }
 @media (max-width: 480px) {
-  .lang button {
+  .lang a {
     padding: 0.3rem 0.45rem;
   }
   .hero__actions .btn {

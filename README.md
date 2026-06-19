@@ -4,7 +4,7 @@ A small, fast, **trilingual** learning hub. It turns the best free courses on th
 internet into **five focused paths** — and lets anyone follow them step by step,
 in **English, German, or Danish**.
 
-> Curated paths to learn software · Kuratierte Lernwege für Software · Kuraterede forløb til at lære software
+> Curated paths to learn software · Kuratierte Lernwege, um Software zu bauen · Kuraterede forløb til at bygge software
 
 🔗 **Live:** https://majland.de
 
@@ -18,45 +18,61 @@ in **English, German, or Danish**.
 | **Tools & Workflow** | Terminal, Git, workflow   | MIT Missing Semester · GitHub Skills    |
 | **Build with AI**    | LLMs in your apps         | Anthropic Academy                       |
 
-A "new here?" hint suggests an order; otherwise every path stands on its own.
-
 ## Tech
 
-A **vanilla** single-page app (hash routing, i18n, local progress, dark/light
-theme) — no framework — bundled with **Vite**.
+A **vanilla** app (no framework) bundled with **Vite**, then **pre-rendered to
+static HTML** at build time. Best of both worlds: real, crawlable pages for search
+engines and link previews, plus instant client-side navigation when JS runs.
 
 ```
 src/
-  main.js      App: rendering, hash routing, progress, theme, language
   content.js   Single source of truth — every string as { en, de, da }
+  render.js    Pure HTML rendering + URL/routing helpers (runs in Node AND the browser)
+  main.js      Client: history routing, progress, theme, language switch
   icons.js     Inline SVG icons
   styles.css   Design system: themes, per-track accent colours, responsive
-index.html     Shell: header, language switcher, <noscript> fallback
-public/        Copied as-is: favicon, icons, OG image, robots.txt, sitemap.xml, manifest
+index.html     Shell (header, footer); main#app is filled per page
+scripts/
+  prerender.mjs  Post-build SSG: writes one static page per language × route
+public/        Copied as-is: favicon, icons, OG image, robots.txt, manifest
 ```
+
+### URLs
+
+English lives at the root; German and Danish are prefixed:
+
+```
+/                 /de/                 /da/                 ← home
+/path/web/        /de/path/web/        /da/path/web/        ← a path
+```
+
+Each page is real static HTML with its own `<title>`, description, `canonical`,
+**hreflang** alternates (incl. `x-default` → English), per-language Open Graph,
+and **JSON-LD** structured data. A full `sitemap.xml` is generated too.
 
 ### Notable choices
 
-- **One data file, three languages.** Every UI string and all path content lives
-  in `src/content.js` as `{ en, de, da }`. Language switches live and is remembered;
-  it defaults to the visitor's browser language.
-- **Relative base (`base: './'`).** The build works dropped into _any_ web root —
-  the one.com root, a GitHub Pages project path, or opened from disk — with no
-  per-host configuration.
-- **Hash routing.** Routes like `#/path/web` need **no** server rewrite rules, so it
-  just works on one.com (and anywhere else) as plain static files.
-- **Accessible & resilient.** Semantic landmarks, skip link, keyboard-friendly,
-  `prefers-reduced-motion` respected, and a `<noscript>` list of every resource.
+- **SEO-first, English-first.** `renderApp()` in `render.js` is pure (no DOM), so the
+  same code renders pages in Node at build time and in the browser at runtime.
+- **Works without JavaScript.** Every page and link is real, so the site is fully
+  usable with JS disabled; the client just adds instant transitions + progress/theme/lang.
+- **Absolute base (`/`).** Targets the domain root (your one.com deploy). Hash-free
+  URLs need no server rewrites because every route is pre-rendered to its own file.
+- **One data file, three languages.** Switching language navigates to the localized
+  URL — so links like `/de/path/web/` are shareable and indexable.
 
 ## Develop
 
 ```bash
 npm install      # once
-npm run dev      # dev server with hot reload (http://localhost:5173)
-npm run build    # production build → dist/
+npm run dev      # dev server (http://localhost:5173) with history routing
+npm run build    # vite build + pre-render → dist/  (18 pages + sitemap + 404)
 npm run preview  # serve the built dist/ locally
-npm run format   # format everything with Prettier
+npm run format   # Prettier
 ```
+
+> Note: because it now uses ES modules + absolute URLs, open it via a server
+> (`npm run dev` / `npm run preview`), not by double-clicking `index.html`.
 
 ## Deploy
 
@@ -65,30 +81,23 @@ npm run format   # format everything with Prettier
 ```bash
 npm run build
 # upload the *contents* of dist/ into your web root on one.com, e.g.:
-scp -r dist/* USER@ssh.majland.de:/customers/.../www/
-#   …or use SFTP / the one.com File Manager. Upload dist/* — not the dist folder itself.
+scp -r dist/* USER@ssh.example.com:/path/to/www/
 ```
 
-Because the build uses a relative base and hash routing, no `.htaccess` or rewrite
-rules are needed. Re-run `npm run build` and re-upload `dist/` to publish changes.
+Upload `dist/*` (not the folder). The pre-rendered subfolders (`/de/`, `/path/web/`,
+…) become real URLs; no `.htaccess` needed. Re-run `npm run build` and re-upload to publish.
 
-### GitHub Pages (optional, automatic)
+### GitHub Pages (optional preview)
 
-`.github/workflows/deploy.yml` builds and deploys on every push to `main`. To enable:
-**repo Settings → Pages → Source → "GitHub Actions."** It also acts as a CI check
-that the site still builds. Don't want it? Delete the workflow file.
+`.github/workflows/deploy.yml` builds with `--base=/majland.de/` and deploys on every
+push to `main` (also a CI build-check). Enable via **Settings → Pages → Source → "GitHub
+Actions."** Canonical URLs always point to `majland.de`, so the preview won't compete in search.
 
 ## Editing the content
 
-Almost everything is in **`src/content.js`**:
-
-- **Change a resource or blurb:** edit the relevant `steps` entry in a path. Keep the
-  three language keys (`en`, `de`, `da`) in sync.
-- **Add a path:** copy a path object in `PATHS` — give it a unique `id`, an `accent`
-  (`indigo` / `cyan` / `emerald` / `amber` / `pink`) and an `icon` key from
-  `src/icons.js`. It appears on the home grid automatically.
-- **Add a language:** add the key to every string and a matching button in the
-  header's `#langSwitch` in `index.html`.
+Almost everything is in **`src/content.js`** (`{ en, de, da }` — keep all three in sync).
+To add a path, copy a `PATHS` object (unique `id`, an `accent`, an `icon` from
+`src/icons.js`); it's picked up by the hub, the pre-renderer and the sitemap automatically.
 
 ---
 

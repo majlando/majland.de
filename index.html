@@ -31,23 +31,14 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Set theme + language before first paint to avoid a flash. -->
+    <!-- Set the theme before first paint to avoid a flash. The page's language
+         is fixed by the URL (pre-rendered), so it isn't touched here. -->
     <script>
       (function () {
-        var d = document.documentElement;
         try {
           var t = localStorage.getItem('mjl-theme');
-          d.dataset.theme =
+          document.documentElement.dataset.theme =
             t || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        } catch (e) {}
-        try {
-          var l = localStorage.getItem('mjl-lang');
-          if (!l) {
-            var n = (navigator.language || 'en').slice(0, 2).toLowerCase();
-            l = n === 'de' || n === 'da' ? n : 'en';
-          }
-          d.dataset.lang = l;
-          d.lang = l;
         } catch (e) {}
       })();
     </script>
@@ -61,22 +52,22 @@
 
     <header class="site-header">
       <div class="wrap site-header__inner">
-        <a class="brand" href="#/" aria-label="majland.de">
+        <a class="brand" data-nav="home" href="/" aria-label="majland.de">
           <span class="brand__mark" aria-hidden="true">{ }</span>
           <span class="brand__text">majland<span class="brand__dot">.de</span></span>
         </a>
 
         <nav class="primary-nav" aria-label="Primary">
-          <a href="#/" data-i18n="nav_paths">Paths</a>
-          <a href="#reference" data-i18n="nav_reference">Reference</a>
-          <a href="#method" data-i18n="nav_method">How to learn</a>
+          <a data-nav="home" href="/" data-i18n="nav_paths">Paths</a>
+          <a data-nav="reference" href="/#reference" data-i18n="nav_reference">Reference</a>
+          <a data-nav="method" href="/#method" data-i18n="nav_method">How to learn</a>
         </nav>
 
         <div class="header-controls">
           <div class="lang" id="langSwitch" role="group" aria-label="Language">
-            <button type="button" data-lang="en" aria-pressed="true">EN</button>
-            <button type="button" data-lang="de" aria-pressed="false">DE</button>
-            <button type="button" data-lang="da" aria-pressed="false">DA</button>
+            <a data-langlink="en" href="/" aria-current="true">EN</a>
+            <a data-langlink="de" href="/de/">DE</a>
+            <a data-langlink="da" href="/da/">DA</a>
           </div>
           <button
             id="themeToggle"
@@ -131,51 +122,11 @@
       </div>
     </header>
 
-    <main id="app" tabindex="-1"><!-- rendered by app.js --></main>
-
-    <noscript>
-      <div class="wrap" style="padding: 2.5rem 0; max-width: 720px">
-        <h1>majland.de — learn to build software</h1>
-        <p>
-          This learning hub uses JavaScript to switch languages and show each path. Here are the
-          core free resources to get started:
-        </p>
-        <ul>
-          <li>
-            <strong>Foundations:</strong>
-            <a href="https://learning.edx.org/course/course-v1:HarvardX+CS50+X/home">CS50x</a>,
-            <a href="https://cs61a.org/">CS61A</a>,
-            <a href="https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/"
-              >MIT 6.006</a
-            >
-          </li>
-          <li>
-            <strong>The Web:</strong> <a href="https://web.dev/learn">web.dev</a>,
-            <a href="https://javascript.info/">javascript.info</a>,
-            <a href="https://developer.mozilla.org/en-US/">MDN</a>
-          </li>
-          <li>
-            <strong>Full-Stack:</strong>
-            <a href="https://fullstackopen.com/en/">Full Stack Open</a>,
-            <a href="https://www.typescriptlang.org/docs/handbook/">TypeScript Handbook</a>,
-            <a href="https://cs50.harvard.edu/web/">CS50 Web</a>
-          </li>
-          <li>
-            <strong>Tools:</strong>
-            <a href="https://missing.csail.mit.edu/2026/">MIT Missing Semester</a>,
-            <a href="https://learn.github.com/skills">GitHub Skills</a>
-          </li>
-          <li>
-            <strong>Build with AI:</strong>
-            <a href="https://anthropic.skilljar.com/">Anthropic Academy</a>
-          </li>
-        </ul>
-      </div>
-    </noscript>
+    <main id="app" tabindex="-1"><!-- pre-rendered at build time; enhanced by main.js --></main>
 
     <footer class="site-footer">
       <div class="wrap site-footer__inner">
-        <a class="brand" href="#/" aria-label="majland.de">
+        <a class="brand" data-nav="home" href="/" aria-label="majland.de">
           <span class="brand__mark" aria-hidden="true">{ }</span>
           <span class="brand__text">majland<span class="brand__dot">.de</span></span>
         </a>
