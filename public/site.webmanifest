@@ -1,0 +1,16 @@
+{
+  "name": "majland.de — learn to build software",
+  "short_name": "majland.de",
+  "description": "Curated paths to learn software — programming, the web, full-stack, tools and AI. In English, German and Danish.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c0e14",
+  "theme_color": "#0c0e14",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

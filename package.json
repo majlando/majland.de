@@ -1,0 +1,19 @@
+{
+  "name": "majland-de",
+  "version": "1.0.0",
+  "description": "A free, trilingual learning hub — curated paths to learn software.",
+  "type": "module",
+  "private": true,
+  "homepage": "https://majland.de/",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.8.4",
+    "vite": "^8.0.16"
+  }
+}

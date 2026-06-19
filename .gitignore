@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Build output (built locally and uploaded; not version-controlled)
+dist/
+
+# Local / editor / OS
+*.local
+.vite/
+.DS_Store
+Thumbs.db
+.idea/
+*.log
+
+# Local agent config
+.claude/
