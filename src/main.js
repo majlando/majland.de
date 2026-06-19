@@ -77,9 +77,16 @@ import { renderApp, parseRoute, routeURL, homeURL, pathById, pageTitle } from '.
   }
 
   /* ---------- render the current route ---------- */
+  function syncReset() {
+    if (currentRoute.type !== 'path') return;
+    var p = pathById(currentRoute.id);
+    var btn = app.querySelector('[data-reset]');
+    if (p && btn) btn.hidden = doneFor(p) === 0;
+  }
   function render() {
     app.innerHTML = '<div class="view">' + renderApp(ctx(), currentRoute) + '</div>';
     applyStatic();
+    syncReset();
   }
 
   /* ---------- navigation ---------- */
@@ -161,6 +168,20 @@ import { renderApp, parseRoute, routeURL, homeURL, pathById, pageTitle } from '.
         if (txt) txt.textContent = done;
       }
     }
+    syncReset();
+  });
+
+  /* ---------- reset progress for the current path ---------- */
+  app.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('[data-reset]');
+    if (!btn || currentRoute.type !== 'path') return;
+    var p = pathById(currentRoute.id);
+    if (!p) return;
+    var msg = SITE.UI.reset_confirm[lang] || SITE.UI.reset_confirm.en;
+    if (!window.confirm(msg)) return;
+    for (var i = 0; i < p.steps.length; i++) progress.delete(p.id + ':' + i);
+    saveProgress();
+    render();
   });
 
   /* ---------- theme toggle ---------- */

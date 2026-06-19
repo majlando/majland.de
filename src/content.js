@@ -62,6 +62,16 @@ export const SITE = (function () {
     step_word: { en: 'Step', de: 'Schritt', da: 'Trin' },
     mark_done: { en: 'Done', de: 'Erledigt', da: 'Færdig' },
     done_count: { en: 'done', de: 'erledigt', da: 'færdig' },
+    reset_progress: {
+      en: 'Reset',
+      de: 'Zurücksetzen',
+      da: 'Nulstil',
+    },
+    reset_confirm: {
+      en: 'Clear your progress for this path?',
+      de: 'Deinen Fortschritt für diesen Lernweg löschen?',
+      da: 'Vil du rydde din fremgang for dette forløb?',
+    },
 
     reference_title: { en: 'Reference shelf', de: 'Nachschlagewerke', da: 'Opslagsværker' },
     reference_lead: {
@@ -225,7 +235,7 @@ export const SITE = (function () {
       steps: [
         {
           name: 'CS50x — Introduction to Computer Science',
-          url: 'https://learning.edx.org/course/course-v1:HarvardX+CS50+X/home',
+          url: 'https://cs50.harvard.edu/x/',
           provider: 'HarvardX',
           type: 'course',
           blurb: {
@@ -440,6 +450,17 @@ export const SITE = (function () {
             en: 'Hands-on, interactive practice with Git, branches and pull requests.',
             de: 'Praktische, interaktive Übungen zu Git, Branches und Pull Requests.',
             da: 'Praktisk, interaktiv træning i Git, branches og pull requests.',
+          },
+        },
+        {
+          name: 'Pro Git',
+          url: 'https://git-scm.com/book/en/v2',
+          provider: 'git-scm.com',
+          type: 'reference',
+          blurb: {
+            en: 'The free, official Git book — from everyday commands to how Git really works underneath.',
+            de: 'Das kostenlose, offizielle Git-Buch – von den alltäglichen Befehlen bis dahin, wie Git wirklich funktioniert.',
+            da: 'Den gratis, officielle Git-bog – fra de daglige kommandoer til, hvordan Git virkelig fungerer indeni.',
           },
         },
       ],

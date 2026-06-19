@@ -810,6 +810,26 @@ a:hover {
 .pprogress__txt b {
   color: var(--text);
 }
+.pprogress__reset {
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: 0;
+  border-left: 1px solid var(--border);
+  padding: 0.1rem 0 0.1rem 0.85rem;
+  margin-left: 0.1rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.pprogress__reset:hover {
+  color: var(--text);
+}
+.pprogress__reset[hidden] {
+  display: none;
+}
 
 .psteps-title {
   font-size: 1.2rem;

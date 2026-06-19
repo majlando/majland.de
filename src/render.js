@@ -287,7 +287,10 @@ export function renderPath(ctx, id) {
     total +
     ' ' +
     esc(tr(U.done_count, lang)) +
-    '</span></div>' +
+    '</span>' +
+    '<button type="button" class="pprogress__reset" data-reset hidden>' +
+    esc(tr(U.reset_progress, lang)) +
+    '</button></div>' +
     '<h2 class="psteps-title">' +
     esc(tr(U.in_this_path, lang)) +
     '</h2><ol class="steps">' +
