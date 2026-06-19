@@ -3,3 +3,5 @@
 
 # Binary assets
 *.png binary
+*.woff binary
+*.woff2 binary
