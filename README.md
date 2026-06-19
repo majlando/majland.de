@@ -34,7 +34,11 @@ src/
 index.html     Shell (header, footer); main#app is filled per page
 scripts/
   prerender.mjs  Post-build SSG: writes one static page per language × route
-public/        Copied as-is: favicon, icons, OG image, robots.txt, manifest
+  og-images.mjs  Generates a branded OG image per page × language (satori → resvg)
+  check-i18n.mjs Fails the build if any string is missing en/de/da
+  check-links.mjs Pings every course/reference URL; flags dead links
+  fonts/         Inter (latin subset, OFL) — bundled so OG text renders in CI
+public/        Copied as-is: favicon, icons, OG fallback, robots.txt, manifest
 ```
 
 ### URLs
@@ -47,8 +51,10 @@ English lives at the root; German and Danish are prefixed:
 ```
 
 Each page is real static HTML with its own `<title>`, description, `canonical`,
-**hreflang** alternates (incl. `x-default` → English), per-language Open Graph,
-and **JSON-LD** structured data. A full `sitemap.xml` is generated too.
+**hreflang** alternates (incl. `x-default` → English), per-language Open Graph
+(incl. a **generated, per-path social image**), and **JSON-LD** structured data
+(`WebSite` / `ItemList` + `BreadcrumbList`). A full `sitemap.xml` (with `lastmod`)
+is generated too.
 
 ### Notable choices
 
@@ -64,12 +70,18 @@ and **JSON-LD** structured data. A full `sitemap.xml` is generated too.
 ## Develop
 
 ```bash
-npm install      # once
-npm run dev      # dev server (http://localhost:5173) with history routing
-npm run build    # vite build + pre-render → dist/  (18 pages + sitemap + 404)
-npm run preview  # serve the built dist/ locally
-npm run format   # Prettier
+npm install        # once
+npm run dev        # dev server (http://localhost:5173) with history routing
+npm run build      # check:i18n + vite build + pre-render → dist/ (18 pages + sitemap + 404)
+npm run preview    # serve the built dist/ locally
+npm run check:i18n # fail if any string is missing en/de/da (also runs in build + CI)
+npm run check:links # ping every course/reference URL; flags dead links
+npm run format     # Prettier
 ```
+
+`check:i18n` guards the trilingual promise (it gates the build, so a missing
+translation can never ship). `check:links` is offline-tolerant — it fails only on
+clearly-dead links (404/410/5xx) and merely warns on bot-blocks/rate-limits.
 
 > Note: because it now uses ES modules + absolute URLs, open it via a server
 > (`npm run dev` / `npm run preview`), not by double-clicking `index.html`.

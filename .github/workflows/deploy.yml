@@ -29,12 +29,29 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Guard the trilingual promise: fail fast if any string is missing en/de/da.
+      - run: npm run check:i18n
       # GitHub Pages serves this project under /majland.de/, so build with that
       # base. (Your one.com root deploy uses the default base "/" via `npm run build`.)
-      - run: npx vite build --base=/majland.de/ && npm run prerender
+      - run: npx vite build --base=/majland.de/ && npm run og && npm run prerender
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
+  # Outbound link health. Runs independently and is allowed to fail (course hosts
+  # rate-limit / block bots), so a flaky third-party server never blocks a deploy —
+  # it just surfaces dead links in the Actions tab.
+  linkcheck:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check:links
 
   deploy:
     needs: build

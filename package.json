@@ -7,14 +7,19 @@
   "homepage": "https://majland.de/",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && npm run prerender",
+    "build": "npm run check:i18n && vite build && npm run og && npm run prerender",
+    "og": "node scripts/og-images.mjs",
     "prerender": "node scripts/prerender.mjs",
     "preview": "vite preview",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:links": "node scripts/check-links.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "prettier": "^3.8.4",
+    "satori": "^0.26.0",
     "vite": "^8.0.16"
   }
 }
