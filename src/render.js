@@ -95,7 +95,7 @@ export function renderHome(ctx) {
       '</span><span>' +
       total +
       ' ' +
-      esc(tr(U.resources_word, lang)) +
+      esc(tr(total === 1 ? U.resource_word : U.resources_word, lang)) +
       '</span></div>' +
       '<div class="pcard__bar"><span style="width:' +
       pct +

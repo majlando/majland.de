@@ -50,6 +50,14 @@ function ogImage(route, lang) {
   const slug = route.type === 'path' ? route.id : 'home';
   return `${ORIGIN}/og/${slug}-${lang}.png`;
 }
+// Alt text describing that image, for screen readers on shared links.
+function ogAlt(route, lang) {
+  if (route.type === 'path') {
+    const p = pathById(route.id);
+    return `${tr(p.title, lang)} — ${tr(p.tagline, lang)}`;
+  }
+  return `majland.de — ${tr(SITE.UI.hero_title, lang)}`;
+}
 function clamp(str, n) {
   str = String(str).replace(/\s+/g, ' ').trim();
   return str.length > n ? str.slice(0, n - 1).trimEnd() + '…' : str;
@@ -179,6 +187,15 @@ function buildPage(route, lang) {
   html = html.replace(
     /<meta name="twitter:image"[^>]*\/>/,
     `<meta name="twitter:image" content="${img}" />`
+  );
+  const alt = esc(ogAlt(route, lang));
+  html = html.replace(
+    /<meta property="og:image:alt"[^>]*\/>/,
+    `<meta property="og:image:alt" content="${alt}" />`
+  );
+  html = html.replace(
+    /<meta name="twitter:image:alt"[^>]*\/>/,
+    `<meta name="twitter:image:alt" content="${alt}" />`
   );
 
   // inject hreflang + og:locale + JSON-LD before </head>

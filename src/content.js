@@ -59,6 +59,7 @@ export const SITE = (function () {
     },
 
     level_label: { en: 'Level', de: 'Niveau', da: 'Niveau' },
+    resource_word: { en: 'resource', de: 'Ressource', da: 'ressource' },
     resources_word: { en: 'resources', de: 'Ressourcen', da: 'ressourcer' },
     view_path: { en: 'View path', de: 'Zum Lernweg', da: 'Se forløb' },
     back_to_paths: { en: 'All paths', de: 'Alle Lernwege', da: 'Alle forløb' },
@@ -498,7 +499,6 @@ export const SITE = (function () {
         de: 'Du kannst ein LLM in eine echte App einbauen und Prompts schreiben, die zuverlässig funktionieren.',
         da: 'Du kan bygge en LLM ind i en rigtig app og skrive prompts, der virker pålideligt.',
       },
-      next: 'web',
       steps: [
         {
           name: 'Anthropic Academy',
@@ -509,6 +509,28 @@ export const SITE = (function () {
             en: 'Prompt engineering, the Claude API, tool use and building agents — straight from the source.',
             de: 'Prompt-Engineering, die Claude-API, Tool-Nutzung und der Bau von Agenten – direkt von der Quelle.',
             da: 'Prompt engineering, Claude-API’en, brug af værktøjer og det at bygge agenter – direkte fra kilden.',
+          },
+        },
+        {
+          name: 'Generative AI for Beginners',
+          url: 'https://microsoft.github.io/generative-ai-for-beginners/',
+          provider: 'Microsoft',
+          type: 'course',
+          blurb: {
+            en: 'Hands-on lessons on building with LLMs — prompting, RAG, function calling and agents.',
+            de: 'Praktische Lektionen zum Bauen mit LLMs – Prompting, RAG, Function Calling und Agenten.',
+            da: 'Praktiske lektioner i at bygge med LLM’er – prompting, RAG, function calling og agenter.',
+          },
+        },
+        {
+          name: 'Prompt Engineering Guide',
+          url: 'https://www.promptingguide.ai/',
+          provider: 'DAIR.AI',
+          type: 'reference',
+          blurb: {
+            en: 'A thorough, up-to-date reference on prompting — few-shot, chain-of-thought, RAG and agents.',
+            de: 'Ein gründliches, aktuelles Nachschlagewerk zum Prompting – Few-Shot, Chain-of-Thought, RAG und Agenten.',
+            da: 'Et grundigt, opdateret opslagsværk om prompting – few-shot, chain-of-thought, RAG og agenter.',
           },
         },
       ],

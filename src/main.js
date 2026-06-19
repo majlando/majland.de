@@ -214,7 +214,6 @@ import {
     var langlink = a.getAttribute('data-langlink');
     if (langlink) {
       lang = langlink;
-      write('mjl-lang', lang);
     }
     e.preventDefault();
     go(href, true);
