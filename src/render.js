@@ -50,6 +50,34 @@ export function routeURL(base, route, lang) {
   return route.type === 'path' ? pathURL(base, lang, route.id) : homeURL(base, lang);
 }
 
+/* Paths in recommended order: start at the head of the `next` chain
+   (the path no other path points to) and follow it. The home trail and
+   its numbering reflect this real, suggested route. */
+export function orderedPaths() {
+  var byId = {},
+    isTarget = {};
+  SITE.PATHS.forEach(function (p) {
+    byId[p.id] = p;
+    if (p.next) isTarget[p.next] = true;
+  });
+  var head = null;
+  SITE.PATHS.forEach(function (p) {
+    if (!head && !isTarget[p.id]) head = p;
+  });
+  var out = [],
+    seen = {},
+    cur = head || SITE.PATHS[0];
+  while (cur && !seen[cur.id]) {
+    out.push(cur);
+    seen[cur.id] = true;
+    cur = cur.next ? byId[cur.next] : null;
+  }
+  SITE.PATHS.forEach(function (p) {
+    if (!seen[p.id]) out.push(p);
+  });
+  return out;
+}
+
 /* The full list of routes we render (home + each path). */
 export function allRoutes() {
   var routes = [{ type: 'home' }];
@@ -71,49 +99,54 @@ export function renderHome(ctx) {
     base = ctx.base,
     progress = ctx.progress;
 
-  var cards = SITE.PATHS.map(function (p) {
-    var done = countDone(p, progress),
-      total = p.steps.length,
-      pct = Math.round((done / total) * 100);
-    return (
-      '<a class="pcard" data-accent="' +
-      p.accent +
-      '" href="' +
-      pathURL(base, lang, p.id) +
-      '">' +
-      '<span class="pcard__icon">' +
-      I[p.icon] +
-      '</span>' +
-      '<h3 class="pcard__title">' +
-      esc(tr(p.title, lang)) +
-      '</h3>' +
-      '<p class="pcard__tag">' +
-      esc(tr(p.tagline, lang)) +
-      '</p>' +
-      '<div class="pcard__meta"><span class="lvl">' +
-      esc(tr(p.level, lang)) +
-      '</span><span>' +
-      total +
-      ' ' +
-      esc(tr(total === 1 ? U.resource_word : U.resources_word, lang)) +
-      '</span></div>' +
-      '<div class="pcard__bar"><span style="width:' +
-      pct +
-      '%"></span></div>' +
-      '<div class="pcard__foot"><span class="pcard__count">' +
-      done +
-      '/' +
-      total +
-      ' ' +
-      esc(tr(U.done_count, lang)) +
-      '</span>' +
-      '<span class="pcard__go">' +
-      esc(tr(U.view_path, lang)) +
-      I.arrow +
-      '</span></div>' +
-      '</a>'
-    );
-  }).join('');
+  var cards = orderedPaths()
+    .map(function (p, i) {
+      var done = countDone(p, progress),
+        total = p.steps.length,
+        pct = Math.round((done / total) * 100);
+      return (
+        '<li class="stop" data-accent="' +
+        p.accent +
+        '"><span class="stop__marker" aria-hidden="true">' +
+        (i + 1) +
+        '</span>' +
+        '<a class="pcard" href="' +
+        pathURL(base, lang, p.id) +
+        '">' +
+        '<span class="pcard__icon">' +
+        I[p.icon] +
+        '</span>' +
+        '<h3 class="pcard__title">' +
+        esc(tr(p.title, lang)) +
+        '</h3>' +
+        '<p class="pcard__tag">' +
+        esc(tr(p.tagline, lang)) +
+        '</p>' +
+        '<div class="pcard__meta"><span class="lvl">' +
+        esc(tr(p.level, lang)) +
+        '</span><span>' +
+        total +
+        ' ' +
+        esc(tr(total === 1 ? U.resource_word : U.resources_word, lang)) +
+        '</span></div>' +
+        '<div class="pcard__bar"><span style="width:' +
+        pct +
+        '%"></span></div>' +
+        '<div class="pcard__foot"><span class="pcard__count">' +
+        done +
+        '/' +
+        total +
+        ' ' +
+        esc(tr(U.done_count, lang)) +
+        '</span>' +
+        '<span class="pcard__go">' +
+        esc(tr(U.view_path, lang)) +
+        I.arrow +
+        '</span></div>' +
+        '</a></li>'
+      );
+    })
+    .join('');
 
   var refs = SITE.REFERENCES.map(function (r) {
     return (
@@ -159,9 +192,9 @@ export function renderHome(ctx) {
     esc(tr(U.new_here, lang)) +
     '</strong> ' +
     esc(tr(U.new_here_text, lang)) +
-    '</p></div><div class="paths-grid">' +
+    '</p></div><ol class="trail">' +
     cards +
-    '</div></div></section>' +
+    '</ol></div></section>' +
     '<section id="reference" class="section section--alt"><div class="wrap">' +
     '<header class="section__head"><p class="eyebrow">' +
     esc(tr(U.nav_reference, lang)) +

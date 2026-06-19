@@ -1,94 +1,135 @@
 /* ============================================================
    majland.de — Learning hub
-   Hand-written, dependency-free, accessible, multilingual.
+   "Editorial trail map": ink on paper, a warm serif voice, and
+   one continuous trail line that threads the whole journey.
+   Colour is wayfinding — it only appears where a path lives.
    ============================================================ */
 
+/* ---------- Typeface: Fraunces (display) + Inter (body) ----------
+   Variable woff2, self-hosted & fingerprinted by Vite. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('./fonts/fraunces-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('./fonts/fraunces-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('./fonts/inter-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('./fonts/inter-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
 :root {
-  --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono:
     ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', 'Fira Code', Menlo, Consolas,
     monospace;
-  --wrap: 1120px;
-  --narrow: 760px;
-  --radius: 16px;
-  --shadow-sm: 0 1px 2px rgba(8, 10, 18, 0.1), 0 3px 8px rgba(8, 10, 18, 0.08);
-  --shadow-md: 0 10px 30px rgba(8, 10, 18, 0.16);
+  --wrap: 1100px;
+  --narrow: 720px;
+  --radius: 14px;
+  --shadow-sm: 0 1px 2px rgba(28, 24, 16, 0.06), 0 2px 8px rgba(28, 24, 16, 0.05);
+  --shadow-md: 0 14px 34px rgba(28, 24, 16, 0.12);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Dark (default) */
+/* ---------- Palette ---------- */
+/* Light "paper" is the headline aesthetic. */
 :root,
-[data-theme='dark'] {
-  --bg: #0c0e14;
-  --bg-alt: #0f121b;
-  --surface: #14171f;
-  --surface-2: #1a1e29;
-  --surface-3: #222736;
-  --border: #262c3b;
-  --border-strong: #353c4f;
-  --text: #e8ebf3;
-  --text-soft: #c3c9d7;
-  --text-muted: #909aac;
-  --accent: #8b93ff;
-  --accent-2: #5ad6e8;
-  --accent-ink: #c7ccff;
-  --accent-soft: #181c33;
-  --success: #4ade80;
-  --success-soft: #122b1e;
-  --hero-grad:
-    radial-gradient(58% 55% at 50% -5%, rgba(139, 147, 255, 0.2), transparent 70%),
-    radial-gradient(40% 45% at 88% 5%, rgba(90, 214, 232, 0.12), transparent 72%);
-  color-scheme: dark;
-}
-/* Light */
 [data-theme='light'] {
-  --bg: #fcfcfe;
-  --bg-alt: #f4f6fb;
-  --surface: #fff;
-  --surface-2: #f5f7fc;
-  --surface-3: #eceff6;
-  --border: #e5e8f1;
-  --border-strong: #d3d8e6;
-  --text: #151925;
-  --text-soft: #38404f;
-  --text-muted: #5d6678;
-  --accent: #4f46e5;
-  --accent-2: #0e9bb5;
-  --accent-ink: #4035c0;
-  --accent-soft: #eef1ff;
-  --success: #15a34a;
-  --success-soft: #e4f7eb;
-  --hero-grad:
-    radial-gradient(58% 55% at 50% -5%, rgba(79, 70, 229, 0.13), transparent 70%),
-    radial-gradient(40% 45% at 88% 5%, rgba(14, 155, 181, 0.1), transparent 72%);
+  --bg: #f3eee3; /* warm paper */
+  --bg-alt: #ece4d4; /* deeper paper band */
+  --surface: #fbf8f1; /* raised card */
+  --surface-2: #ece4d5;
+  --surface-3: #e0d6c3;
+  --border: #ddd3bf;
+  --border-strong: #c9bda3;
+  --text: #23262b; /* warm ink */
+  --text-soft: #4c4e52;
+  --text-muted: #7b7567;
+  --accent: #2f6e78; /* slate-teal "marker" — the one neutral brand signal */
+  --accent-ink: #265a63;
+  --accent-soft: #e2ebe9;
+  --success: #3e8f63;
+  --success-soft: #e3eee2;
   color-scheme: light;
 }
+/* Dark = "field notebook at night": warm charcoal, never pure black. */
+[data-theme='dark'] {
+  --bg: #181a1e;
+  --bg-alt: #141519;
+  --surface: #202329;
+  --surface-2: #272a32;
+  --surface-3: #31343e;
+  --border: #313440;
+  --border-strong: #454956;
+  --text: #ece8dd; /* warm off-white */
+  --text-soft: #c5c1b4;
+  --text-muted: #908b7e;
+  --accent: #5cb6c2;
+  --accent-ink: #82c9d2;
+  --accent-soft: #1a2a2d;
+  --success: #5fce96;
+  --success-soft: #18271f;
+  color-scheme: dark;
+}
 
-/* Per-track accent colours (light defaults + dark overrides) */
+/* Per-path "blaze" colours — the only saturated colour on the page,
+   appearing exactly where that path's content is. Muted, gouache-like. */
 [data-accent='indigo'] {
-  --pa: #5b54e6;
+  --pa: #4c54c4;
 }
 [data-theme='dark'] [data-accent='indigo'] {
-  --pa: #8b93ff;
+  --pa: #8f97f2;
 }
 [data-accent='cyan'] {
-  --pa: #0e94ad;
+  --pa: #2c7e91;
 }
 [data-theme='dark'] [data-accent='cyan'] {
-  --pa: #56d2e6;
+  --pa: #5fc9dc;
 }
 [data-accent='emerald'] {
-  --pa: #119a66;
+  --pa: #3e8f63;
 }
 [data-theme='dark'] [data-accent='emerald'] {
-  --pa: #54d699;
+  --pa: #5fce96;
 }
 [data-accent='amber'] {
-  --pa: #b9791f;
+  --pa: #b07423;
 }
 [data-theme='dark'] [data-accent='amber'] {
-  --pa: #ecae5a;
+  --pa: #e3a95a;
 }
 :root,
 [data-theme] {
@@ -106,9 +147,6 @@ html {
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
 }
-body {
-  overflow-wrap: break-word;
-}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -123,32 +161,44 @@ body {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 1.0625rem;
+  font-size: 1.05rem;
   line-height: 1.7;
   color: var(--text);
   background: var(--bg);
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
+
+/* Display type carries the personality: warm old-style serif, set
+   with optical sizing and tight tracking at large sizes. */
 h1,
-h2,
-h3 {
-  line-height: 1.16;
-  letter-spacing: -0.022em;
+h2 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 560;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
   color: var(--text);
-  margin: 0 0 0.5em;
+  margin: 0 0 0.45em;
+}
+h3 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 560;
+  line-height: 1.18;
+  letter-spacing: -0.005em;
+  color: var(--text);
+  margin: 0 0 0.4em;
 }
 h1 {
-  font-size: clamp(2.2rem, 1.4rem + 3.4vw, 3.5rem);
-  font-weight: 800;
+  font-size: clamp(2.5rem, 1.5rem + 4.2vw, 4rem);
 }
 h2 {
-  font-size: clamp(1.6rem, 1.2rem + 1.9vw, 2.4rem);
-  font-weight: 760;
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 2.6rem);
 }
 h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-size: 1.3rem;
 }
 p {
   margin: 0 0 1em;
@@ -156,7 +206,7 @@ p {
 a {
   color: var(--accent-ink);
   text-underline-offset: 3px;
-  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
 }
 a:hover {
   text-decoration-color: currentColor;
@@ -164,7 +214,7 @@ a:hover {
 :focus-visible {
   outline: 2.5px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 5px;
+  border-radius: 4px;
 }
 
 .wrap {
@@ -175,17 +225,29 @@ a:hover {
 .wrap--narrow {
   max-width: var(--narrow);
 }
+
+/* Mono "kicker" eyebrow — the utility/data voice. */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  font-size: 0.76rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.8rem;
   font-weight: 600;
 }
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 1.6rem;
+  height: 1px;
+  margin-right: 0.6rem;
+  vertical-align: 0.25em;
+  background: currentColor;
+  opacity: 0.7;
+}
 .lead {
-  font-size: 1.13rem;
+  font-size: 1.15rem;
   color: var(--text-soft);
 }
 .ext {
@@ -210,16 +272,16 @@ a:hover {
   transform: translateY(0);
 }
 
-/* Buttons */
+/* Buttons — solid ink, no gradient. */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   font: inherit;
-  font-weight: 650;
+  font-weight: 600;
   text-decoration: none;
-  padding: 0.75rem 1.4rem;
-  border-radius: 999px;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
   border: 1px solid transparent;
   cursor: pointer;
   transition:
@@ -232,23 +294,19 @@ a:hover {
   transform: translateY(-1px);
 }
 .btn--primary {
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    color-mix(in srgb, var(--accent) 55%, var(--accent-2))
-  );
-  color: #fff;
+  background: var(--text);
+  color: var(--bg);
   box-shadow: var(--shadow-sm);
 }
 .btn--primary:hover {
   box-shadow: var(--shadow-md);
 }
 
-/* Scroll progress */
+/* Scroll progress — solid marker colour. */
 .scroll-progress {
   position: fixed;
   inset: 0 0 auto 0;
-  height: 3px;
+  height: 2px;
   z-index: 120;
   pointer-events: none;
 }
@@ -256,7 +314,7 @@ a:hover {
   display: block;
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  background: var(--accent);
   transition: width 0.1s linear;
 }
 
@@ -265,8 +323,8 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(140%) blur(12px);
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: saturate(120%) blur(12px);
   border-bottom: 1px solid var(--border);
 }
 .site-header__inner {
@@ -281,18 +339,19 @@ a:hover {
   gap: 0.55rem;
   text-decoration: none;
   color: var(--text);
-  font-weight: 760;
-  font-size: 1.08rem;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
 }
 .brand__mark {
   font-family: var(--font-mono);
   font-weight: 700;
   color: var(--accent);
   background: var(--accent-soft);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 0.1rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  border-radius: 8px;
+  padding: 0.05rem 0.4rem;
   font-size: 0.95rem;
 }
 .brand__dot {
@@ -306,7 +365,7 @@ a:hover {
 .primary-nav a {
   text-decoration: none;
   color: var(--text-muted);
-  font-weight: 550;
+  font-weight: 500;
   font-size: 0.95rem;
   padding: 0.45rem 0.8rem;
   border-radius: 8px;
@@ -332,14 +391,14 @@ a:hover {
   padding: 2px;
 }
 .lang a {
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
   text-decoration: none;
   cursor: pointer;
-  padding: 0.32rem 0.55rem;
+  padding: 0.3rem 0.55rem;
   border-radius: 999px;
   transition:
     color 0.15s,
@@ -358,7 +417,7 @@ a:hover {
   place-items: center;
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: 9px;
   border: 1px solid var(--border-strong);
   background: var(--surface);
   color: var(--text);
@@ -407,32 +466,28 @@ a:hover {
   }
 }
 
-/* Hero */
+/* Hero — strong serif over paper, no glow. */
 .hero {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
 }
 .hero__glow {
-  position: absolute;
-  inset: 0;
-  background: var(--hero-grad);
-  pointer-events: none;
+  display: none;
 }
-/* vertical padding only — keep .wrap's horizontal padding so the hero never touches screen edges */
 .hero__inner {
   position: relative;
-  padding-top: clamp(3rem, 2rem + 6vw, 5.5rem);
-  padding-bottom: clamp(2.2rem, 4vw, 3.5rem);
+  padding-top: clamp(3.2rem, 2rem + 7vw, 6rem);
+  padding-bottom: clamp(2.6rem, 4vw, 4rem);
 }
 .hero h1 {
-  max-width: 18ch;
+  max-width: 15ch;
 }
 .hero__lead {
-  font-size: clamp(1.1rem, 1rem + 0.55vw, 1.3rem);
+  font-size: clamp(1.13rem, 1rem + 0.6vw, 1.35rem);
   color: var(--text-soft);
-  max-width: 56ch;
-  margin-bottom: 1.9rem;
+  max-width: 54ch;
+  margin-bottom: 2rem;
 }
 .hero__actions {
   display: flex;
@@ -442,7 +497,7 @@ a:hover {
 
 /* Section shell */
 .section {
-  padding: clamp(2.6rem, 2rem + 4vw, 4.5rem) 0;
+  padding: clamp(2.8rem, 2rem + 4vw, 4.8rem) 0;
 }
 .section--alt {
   background: var(--bg-alt);
@@ -450,18 +505,58 @@ a:hover {
   border-bottom: 1px solid var(--border);
 }
 .section__head {
-  margin-bottom: 2rem;
+  margin-bottom: 2.2rem;
 }
 .section__head .lead {
-  max-width: 60ch;
+  max-width: 58ch;
 }
 
-/* Path cards grid */
-.paths-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 1.1rem;
+/* ---------- The trail (home) — one line threading the paths in
+   recommended order; each stop is a numbered blaze on the line.
+   The numbering is real: it's the suggested route. ---------- */
+.trail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 760px;
+  position: relative;
 }
+.trail::before {
+  content: '';
+  position: absolute;
+  top: 22px;
+  bottom: 22px;
+  left: 21px;
+  width: 2px;
+  background: var(--border-strong);
+}
+.stop {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 1.1rem;
+  padding-bottom: 1.1rem;
+}
+.stop:last-child {
+  padding-bottom: 0;
+}
+.stop__marker {
+  position: relative;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--surface);
+  border: 2px solid var(--pa);
+  color: var(--pa);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  box-shadow: 0 0 0 6px var(--bg);
+}
+
 .pcard {
   display: flex;
   flex-direction: column;
@@ -469,8 +564,9 @@ a:hover {
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--pa);
   border-radius: var(--radius);
-  padding: 1.5rem;
+  padding: 1.4rem 1.5rem;
   position: relative;
   overflow: hidden;
   transition:
@@ -478,61 +574,53 @@ a:hover {
     transform 0.2s var(--ease),
     box-shadow 0.2s;
 }
-.pcard::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: var(--pa);
-  opacity: 0.9;
-}
 .pcard:hover {
-  border-color: color-mix(in srgb, var(--pa) 55%, var(--border));
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+  border-left-color: var(--pa);
 }
 .pcard__icon {
   display: inline-grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
   color: var(--pa);
-  background: color-mix(in srgb, var(--pa) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--pa) 30%, transparent);
-  margin-bottom: 1rem;
+  background: color-mix(in srgb, var(--pa) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pa) 28%, transparent);
+  margin-bottom: 0.9rem;
 }
 .pcard__icon svg {
-  width: 24px;
-  height: 24px;
+  width: 23px;
+  height: 23px;
 }
 .pcard__title {
-  font-size: 1.3rem;
-  margin-bottom: 0.3rem;
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
 }
 .pcard__tag {
-  color: var(--text-muted);
-  font-size: 0.96rem;
+  color: var(--text-soft);
+  font-size: 1rem;
   margin-bottom: 1rem;
   flex-grow: 1;
 }
 .pcard__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem 0.8rem;
-  font-size: 0.8rem;
+  gap: 0.4rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.02em;
   color: var(--text-muted);
   margin-bottom: 0.9rem;
 }
-.pcard__meta .lvl {
-  font-family: var(--font-mono);
-}
 .pcard__bar {
-  height: 7px;
+  height: 6px;
   background: var(--surface-3);
   border-radius: 999px;
   overflow: hidden;
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.6rem;
 }
 .pcard__bar span {
   display: block;
@@ -548,12 +636,13 @@ a:hover {
   justify-content: space-between;
 }
 .pcard__count {
-  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 .pcard__go {
-  font-size: 0.9rem;
-  font-weight: 650;
+  font-size: 0.92rem;
+  font-weight: 600;
   color: var(--pa);
   display: inline-flex;
   align-items: center;
@@ -573,7 +662,8 @@ a:hover {
   gap: 1rem;
   text-decoration: none;
   background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--pa) 38%, var(--border));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--pa);
   border-radius: var(--radius);
   padding: 1.05rem 1.3rem;
   margin-bottom: 2rem;
@@ -584,24 +674,23 @@ a:hover {
     box-shadow 0.2s;
 }
 .resume:hover {
-  border-color: var(--pa);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 .resume__icon {
   display: inline-grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
-  border-radius: 13px;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
   flex-shrink: 0;
   color: var(--pa);
-  background: color-mix(in srgb, var(--pa) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--pa) 30%, transparent);
+  background: color-mix(in srgb, var(--pa) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pa) 28%, transparent);
 }
 .resume__icon svg {
-  width: 26px;
-  height: 26px;
+  width: 25px;
+  height: 25px;
 }
 .resume__body {
   display: flex;
@@ -611,8 +700,8 @@ a:hover {
 }
 .resume__label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--pa);
   font-weight: 600;
@@ -620,14 +709,15 @@ a:hover {
 }
 .resume__title {
   color: var(--text);
-  font-weight: 700;
-  font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: 1.25rem;
   line-height: 1.2;
 }
 .resume__next {
   color: var(--text-muted);
   font-size: 0.9rem;
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -647,7 +737,7 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-weight: 650;
+  font-weight: 600;
   font-size: 0.95rem;
   color: var(--pa);
   white-space: nowrap;
@@ -674,10 +764,11 @@ a:hover {
   gap: 0.8rem;
   align-items: flex-start;
   background: var(--accent-soft);
-  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--border));
   border-radius: var(--radius);
-  padding: 1.1rem 1.3rem;
-  margin-bottom: 2rem;
+  padding: 1.05rem 1.25rem;
+  margin-bottom: 2.2rem;
+  max-width: 760px;
 }
 .newhere svg {
   color: var(--accent);
@@ -720,17 +811,19 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 0.35rem;
-  font-size: 1.05rem;
-  margin-bottom: 0.3rem;
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: 1.15rem;
+  margin-bottom: 0.35rem;
 }
 .ref span {
   color: var(--text-muted);
-  font-size: 0.9rem;
+  font-size: 0.92rem;
 }
 .ref__host {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   color: var(--accent);
   margin-top: 0.7rem;
 }
@@ -742,30 +835,38 @@ a:hover {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem 1.6rem;
+  gap: 1.2rem 1.8rem;
+  counter-reset: tip;
 }
 .tips li {
   position: relative;
-  padding-left: 1.7rem;
+  padding-left: 2.6rem;
   color: var(--text-muted);
+  counter-increment: tip;
 }
 .tips li::before {
-  content: '';
+  content: counter(tip, decimal-leading-zero);
   position: absolute;
   left: 0;
-  top: 0.62em;
-  width: 0.6rem;
-  height: 0.6rem;
-  border-radius: 50%;
-  background: var(--accent);
+  top: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-radius: 6px;
+  padding: 0.05rem 0.3rem;
 }
 .tips strong {
   display: block;
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: 1.15rem;
   color: var(--text);
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.25rem;
 }
 
-/* ---------- Path view ---------- */
+/* ---------- Path view (the trail, zoomed in) ---------- */
 .pathview {
   padding: clamp(1.6rem, 3vw, 2.6rem) 0 clamp(3rem, 5vw, 5rem);
 }
@@ -775,9 +876,9 @@ a:hover {
   gap: 0.4rem;
   text-decoration: none;
   color: var(--text-muted);
-  font-weight: 560;
+  font-weight: 500;
   font-size: 0.92rem;
-  margin-bottom: 1.6rem;
+  margin-bottom: 1.8rem;
 }
 .backlink:hover {
   color: var(--text);
@@ -792,19 +893,19 @@ a:hover {
 .phead {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 1.1rem;
+  gap: 1.2rem;
   align-items: start;
-  margin-bottom: 1.4rem;
+  margin-bottom: 1.5rem;
 }
 .phead__icon {
   display: inline-grid;
   place-items: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 16px;
+  width: 62px;
+  height: 62px;
+  border-radius: 15px;
   color: var(--pa);
-  background: color-mix(in srgb, var(--pa) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--pa) 32%, transparent);
+  background: color-mix(in srgb, var(--pa) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pa) 30%, transparent);
 }
 .phead__icon svg {
   width: 30px;
@@ -812,39 +913,39 @@ a:hover {
 }
 .phead__eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.1em;
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--pa);
-  margin: 0 0 0.25rem;
+  margin: 0 0 0.3rem;
   font-weight: 600;
 }
 .phead h1 {
-  font-size: clamp(1.9rem, 1.4rem + 2.2vw, 2.8rem);
-  margin: 0 0 0.2rem;
+  font-size: clamp(2rem, 1.4rem + 2.6vw, 3rem);
+  margin: 0 0 0.25rem;
 }
 .phead__tag {
   color: var(--text-soft);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   margin: 0;
 }
 .pmeta {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem 1.4rem;
-  margin: 0 0 1.3rem;
-  font-size: 0.9rem;
+  margin: 0 0 1.4rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
 }
 .pmeta b {
   color: var(--text);
-  font-weight: 650;
+  font-weight: 600;
 }
 .pintro {
   color: var(--text-soft);
-  font-size: 1.08rem;
-  max-width: 64ch;
-  margin-bottom: 1.4rem;
+  font-size: 1.13rem;
+  max-width: 62ch;
+  margin-bottom: 1.6rem;
 }
 
 .pprogress {
@@ -855,12 +956,12 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 0.55rem 1.1rem;
-  margin-bottom: 2.2rem;
+  margin-bottom: 2.4rem;
   box-shadow: var(--shadow-sm);
 }
 .pprogress__bar {
   flex: 1;
-  height: 9px;
+  height: 8px;
   background: var(--surface-3);
   border-radius: 999px;
   overflow: hidden;
@@ -874,7 +975,8 @@ a:hover {
   transition: width 0.5s var(--ease);
 }
 .pprogress__txt {
-  font-size: 0.88rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
   color: var(--text-muted);
   white-space: nowrap;
 }
@@ -883,7 +985,8 @@ a:hover {
 }
 .pprogress__reset {
   font: inherit;
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-muted);
   background: none;
@@ -903,11 +1006,11 @@ a:hover {
 }
 
 .psteps-title {
-  font-size: 1.2rem;
-  margin: 0.5rem 0 1.1rem;
+  font-size: 1.4rem;
+  margin: 0.5rem 0 1.3rem;
 }
 
-/* Steps timeline */
+/* Steps timeline — the same trail line + numbered blazes as home. */
 .steps {
   list-style: none;
   margin: 0 0 2rem;
@@ -921,7 +1024,7 @@ a:hover {
   bottom: 1.6rem;
   left: 19px;
   width: 2px;
-  background: var(--border);
+  background: var(--border-strong);
 }
 .step {
   position: relative;
@@ -939,7 +1042,8 @@ a:hover {
   display: grid;
   place-items: center;
   background: var(--surface);
-  border: 2px solid var(--border-strong);
+  border: 2px solid var(--pa);
+  box-shadow: 0 0 0 6px var(--bg);
   font-family: var(--font-mono);
   font-weight: 700;
   color: var(--pa);
@@ -981,7 +1085,7 @@ a:hover {
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
 }
 .tag {
   font-family: var(--font-mono);
@@ -994,7 +1098,7 @@ a:hover {
 }
 .tag--course {
   color: var(--pa);
-  background: color-mix(in srgb, var(--pa) 15%, transparent);
+  background: color-mix(in srgb, var(--pa) 14%, transparent);
   border: 1px solid color-mix(in srgb, var(--pa) 30%, transparent);
 }
 .tag--reference {
@@ -1003,12 +1107,14 @@ a:hover {
   border: 1px solid var(--border-strong);
 }
 .step__provider {
-  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 .step__name {
-  font-size: 1.15rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 560;
   margin: 0 0 0.35rem;
 }
 .step__name a {
@@ -1034,7 +1140,7 @@ a:hover {
 }
 .step__blurb {
   color: var(--text-muted);
-  font-size: 0.96rem;
+  font-size: 0.98rem;
   margin: 0 0 1rem;
 }
 .mark {
@@ -1077,8 +1183,8 @@ a:hover {
   gap: 0.7rem;
   align-items: flex-start;
   padding: 1.1rem 1.3rem;
-  background: color-mix(in srgb, var(--pa) 9%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--pa) 28%, var(--border));
+  background: color-mix(in srgb, var(--pa) 8%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--pa) 26%, var(--border));
   border-radius: var(--radius);
   margin-bottom: 2rem;
 }
@@ -1110,7 +1216,7 @@ a:hover {
     transform 0.2s var(--ease);
 }
 .nextup:hover {
-  border-color: var(--accent);
+  border-color: var(--pa);
   transform: translateY(-2px);
 }
 .nextup__l {
@@ -1124,11 +1230,12 @@ a:hover {
 }
 .nextup__t {
   color: var(--text);
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 560;
+  font-size: 1.2rem;
 }
 .nextup__arrow {
-  color: var(--accent);
+  color: var(--pa);
   flex-shrink: 0;
 }
 
@@ -1169,8 +1276,8 @@ a:hover {
     grid-template-columns: 1fr;
   }
   .phead__icon {
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
   }
 }
 @media (max-width: 480px) {
@@ -1180,5 +1287,17 @@ a:hover {
   .hero__actions .btn {
     width: 100%;
     justify-content: center;
+  }
+  .stop {
+    grid-template-columns: 36px 1fr;
+    gap: 0.8rem;
+  }
+  .stop__marker {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+  }
+  .trail::before {
+    left: 17px;
   }
 }

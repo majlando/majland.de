@@ -32,22 +32,26 @@ export const SITE = (function () {
       da: 'Gratis læringshub',
     },
     hero_title: {
-      en: 'Curated paths to learn software.',
-      de: 'Kuratierte Lernwege, um Software zu bauen.',
-      da: 'Kuraterede forløb til at bygge software.',
+      en: 'Let’s learn to build software.',
+      de: 'Lass uns lernen, Software zu bauen.',
+      da: 'Lad os lære at bygge software.',
     },
     hero_lead: {
-      en: 'Pick a path, follow it step by step, and learn from the best free courses on the web. No paywalls, no noise.',
-      de: 'Wähl einen Lernweg und geh ihn Schritt für Schritt – mit den besten kostenlosen Kursen im Netz. Keine Bezahlschranken, kein Ballast.',
-      da: 'Vælg et forløb, og følg det skridt for skridt – med de bedste gratis kurser på nettet. Ingen betalingsmure, intet overflødigt.',
+      en: 'Pick a path, take it one step at a time, and learn from the best free courses on the web. No paywalls, no fluff.',
+      de: 'Such dir einen Weg aus, geh ihn Schritt für Schritt und lern mit den besten kostenlosen Kursen im Netz. Keine Bezahlschranken, kein Schnickschnack.',
+      da: 'Vælg et forløb, tag det ét skridt ad gangen, og lær fra de bedste gratis kurser på nettet. Ingen betalingsmure og intet fyld.',
     },
-    hero_cta: { en: 'Choose your path', de: 'Wähle deinen Lernweg', da: 'Vælg dit forløb' },
+    hero_cta: { en: 'Find your path', de: 'Finde deinen Weg', da: 'Find dit forløb' },
 
-    choose_title: { en: 'Choose your path', de: 'Wähle deinen Lernweg', da: 'Vælg dit forløb' },
+    choose_title: {
+      en: 'Where do you want to start?',
+      de: 'Wo willst du anfangen?',
+      da: 'Hvor vil du starte?',
+    },
     choose_lead: {
-      en: 'Four focused paths. Start anywhere, or follow the order below.',
-      de: 'Vier fokussierte Lernwege. Fang an, wo du willst – oder folge der Reihenfolge unten.',
-      da: 'Fire fokuserede forløb. Begynd hvor du vil – eller følg rækkefølgen nedenfor.',
+      en: 'Four focused paths. Jump in wherever you like — or follow the order below.',
+      de: 'Vier fokussierte Lernwege. Spring rein, wo du willst – oder folg einfach der Reihenfolge unten.',
+      da: 'Fire fokuserede forløb. Hop ind, hvor du vil – eller følg bare rækkefølgen nedenfor.',
     },
     continue_title: {
       en: 'Pick up where you left off',
@@ -58,9 +62,9 @@ export const SITE = (function () {
 
     new_here: { en: 'New here?', de: 'Neu hier?', da: 'Ny her?' },
     new_here_text: {
-      en: 'A good order: Tools → Foundations → The Web → Full-Stack. But any path is a fine place to start.',
-      de: 'Eine gute Reihenfolge: Werkzeuge → Grundlagen → Das Web → Full-Stack. Aber jeder Lernweg ist ein guter Anfang.',
-      da: 'En god rækkefølge: Værktøjer → Fundament → Nettet → Full-stack. Men ethvert forløb er et fint sted at starte.',
+      en: 'Try Tools → Foundations → The Web → Full-Stack. But honestly, any path is a great place to start.',
+      de: 'Probier Werkzeuge → Grundlagen → Das Web → Full-Stack. Aber ehrlich: Jeder Weg ist ein super Start.',
+      da: 'Prøv Værktøjer → Fundament → Nettet → Full-stack. Men helt ærligt – ethvert forløb er en god start.',
     },
 
     level_label: { en: 'Level', de: 'Niveau', da: 'Niveau' },
@@ -88,9 +92,9 @@ export const SITE = (function () {
 
     reference_title: { en: 'Reference shelf', de: 'Nachschlagewerke', da: 'Opslagsværker' },
     reference_lead: {
-      en: 'Bookmark these. Knowing where to look things up is a skill in itself.',
-      de: 'Setz Lesezeichen. Zu wissen, wo die Antwort steht, ist selbst schon eine Fähigkeit.',
-      da: 'Sæt bogmærker. At vide, hvor man slår op, er en færdighed i sig selv.',
+      en: 'Bookmark these — you’ll come back to them constantly. Knowing where to look things up is a real skill.',
+      de: 'Setz dir Lesezeichen – du kommst ständig hierher zurück. Zu wissen, wo man nachschlägt, ist eine echte Fähigkeit.',
+      da: 'Sæt bogmærker – du vender tilbage til dem hele tiden. At vide, hvor man slår op, er en rigtig færdighed.',
     },
 
     method_title: {
@@ -99,15 +103,15 @@ export const SITE = (function () {
       da: 'Sådan lærer du det i praksis',
     },
     method_lead: {
-      en: 'The courses are only half of it. How you work through them decides whether any of it sticks.',
-      de: 'Die Kurse sind nur die halbe Miete. Wie du sie durcharbeitest, entscheidet, ob etwas hängen bleibt.',
-      da: 'Kurserne er kun det halve. Hvordan du arbejder dig igennem dem, afgør, om noget af det sætter sig.',
+      en: 'The courses are only half the story. How you work through them is what makes it stick.',
+      de: 'Die Kurse sind nur die halbe Miete. Wie du sie durcharbeitest, entscheidet, ob’s wirklich hängen bleibt.',
+      da: 'Kurserne er kun det halve. Det er måden, du arbejder dig igennem dem på, der får det til at sidde fast.',
     },
 
     footer_tag: {
-      en: 'A free, curated way to learn software — in your language.',
-      de: 'Ein kostenloser, kuratierter Weg in die Softwareentwicklung – in deiner Sprache.',
-      da: 'En gratis, kurateret vej ind i softwareudvikling – på dit sprog.',
+      en: 'A free, friendly way to learn software — in your language.',
+      de: 'Ein kostenloser, freundlicher Weg in die Softwareentwicklung – in deiner Sprache.',
+      da: 'En gratis og venlig vej ind i software – på dit sprog.',
     },
     footer_legal: {
       en: 'Course and reference links belong to their respective owners. No affiliation implied.',

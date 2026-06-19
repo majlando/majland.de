@@ -1,25 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="majland.de">
-  <defs>
-    <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#6d6cff"/>
-      <stop offset="1" stop-color="#22d3ee"/>
-    </linearGradient>
-    <linearGradient id="gl" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#4f46e5"/>
-      <stop offset="1" stop-color="#0e9bb5"/>
-    </linearGradient>
-    <!-- Dark mark by default (attributes below); the tab/bookmark chrome follows
-         the OS theme, so light mode is an override, not JS. -->
-    <style>
-      @media (prefers-color-scheme: light) {
-        .bg { fill: #ffffff; }
-        .fg { stroke: url(#gl); }
-      }
-    </style>
-  </defs>
-  <rect class="bg" width="64" height="64" rx="15" fill="#0c0e14"/>
-  <rect class="fg" x="1.5" y="1.5" width="61" height="61" rx="13.5" fill="none" stroke="url(#gd)" stroke-width="2" opacity="0.55"/>
-  <g class="fg" fill="none" stroke="url(#gd)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- The "{ }" mark in slate-teal — the brand signal. Dark tile by default;
+       the tab/bookmark chrome follows the OS theme, so light mode is an
+       override, not JS. -->
+  <style>
+    .bg { fill: #181a1e; }
+    .fg { stroke: #5cb6c2; }
+    @media (prefers-color-scheme: light) {
+      .bg { fill: #f3eee3; }
+      .fg { stroke: #2f6e78; }
+    }
+  </style>
+  <rect class="bg" width="64" height="64" rx="15"/>
+  <rect class="fg" x="1.5" y="1.5" width="61" height="61" rx="13.5" fill="none" stroke-width="2" opacity="0.45"/>
+  <g class="fg" fill="none" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M26 16c-6 0-7 4-7 8s0 7-5 8c5 1 5 4 5 8s1 8 7 8"/>
     <path d="M38 16c6 0 7 4 7 8s0 7 5 8c-5 1-5 4-5 8s-1 8-7 8"/>
   </g>

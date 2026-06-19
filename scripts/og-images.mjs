@@ -8,7 +8,8 @@
    from one source so they can never drift out of sync.
 
    Pipeline: satori (HTML/CSS → SVG) → resvg (SVG → PNG). Fonts are
-   bundled (Inter, latin subset) so text renders identically in CI.
+   bundled (Inter body + Fraunces display, latin subset) so text renders
+   identically in CI.
    ============================================================ */
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -24,27 +25,26 @@ const DIST = join(__dirname, '..', 'dist');
 const OG_DIR = join(DIST, 'og');
 const U = SITE.UI;
 
-/* ---------- palette (matches the dark theme in styles.css) ---------- */
-const BG = '#0c0e14';
-const TEXT = '#e8ebf3';
-const MUTED = '#9aa3b5';
+/* ---------- palette (matches the dark "field notebook" theme in styles.css) ---------- */
+const BG = '#181a1e';
+const TEXT = '#ece8dd';
+const MUTED = '#908b7e';
+const BRAND = '#5cb6c2'; // slate-teal — the one neutral brand signal
 const ACCENTS = {
-  indigo: '#8b93ff',
-  cyan: '#56d2e6',
-  emerald: '#54d699',
-  amber: '#ecae5a',
+  indigo: '#8f97f2',
+  cyan: '#5fc9dc',
+  emerald: '#5fce96',
+  amber: '#e3a95a',
 };
-const DEFAULT_ACCENT = '#8b93ff';
+// Home has no path, so its blaze == the brand signal (mirrors `--pa: var(--accent)`).
+const DEFAULT_ACCENT = BRAND;
 
-/* App-icon mark: a full-bleed dark tile + the gradient braces, with no border
+/* App-icon mark: a full-bleed dark tile + the slate-teal braces, with no border
    or rounding so it sits cleanly inside any maskable shape. (public/favicon.svg
    is the theme-aware SVG version of the same mark, for the browser tab.) */
 const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-    <stop offset="0" stop-color="#6d6cff"/><stop offset="1" stop-color="#22d3ee"/>
-  </linearGradient></defs>
   <rect width="64" height="64" fill="${BG}"/>
-  <g fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="${BRAND}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M26 16c-6 0-7 4-7 8s0 7-5 8c5 1 5 4 5 8s1 8 7 8"/>
     <path d="M38 16c6 0 7 4 7 8s0 7 5 8c-5 1-5 4-5 8s-1 8-7 8"/>
   </g>
@@ -60,7 +60,8 @@ const font = (f) => readFileSync(join(__dirname, 'fonts', f));
 const FONTS = [
   { name: 'Inter', data: font('Inter-Regular.woff'), weight: 400, style: 'normal' },
   { name: 'Inter', data: font('Inter-Bold.woff'), weight: 700, style: 'normal' },
-  { name: 'Inter', data: font('Inter-ExtraBold.woff'), weight: 800, style: 'normal' },
+  // Fraunces (display serif) — the site's headline voice, static SemiBold for satori.
+  { name: 'Fraunces', data: font('Fraunces-SemiBold.ttf'), weight: 600, style: 'normal' },
 ];
 
 /* ---------- tiny hyperscript for satori's VDOM ---------- */
@@ -81,7 +82,10 @@ function iconDataUri(name, color) {
   return 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64');
 }
 
-/* ---------- one card ---------- */
+/* ---------- one card ----------
+   Mirrors the site: warm-charcoal ground, a left "blaze" edge in the path
+   colour (like .pcard's border-left and the trail line), a Fraunces title,
+   and colour used only as wayfinding. No gradient wash. */
 function card({ accent, iconName, eyebrow, title, sub }) {
   const chip = h(
     'div',
@@ -89,16 +93,16 @@ function card({ accent, iconName, eyebrow, title, sub }) {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      width: 116,
-      height: 116,
-      borderRadius: 28,
-      background: hexToRgba(accent, 0.15),
-      border: `2px solid ${hexToRgba(accent, 0.4)}`,
+      width: 112,
+      height: 112,
+      borderRadius: 26,
+      background: hexToRgba(accent, 0.14),
+      border: `1px solid ${hexToRgba(accent, 0.32)}`,
       marginBottom: 40,
     },
     iconName
-      ? [img(iconDataUri(iconName, accent), 64)]
-      : [h('div', { display: 'flex', fontSize: 56, fontWeight: 800, color: accent }, '{ }')]
+      ? [img(iconDataUri(iconName, accent), 60)]
+      : [h('div', { display: 'flex', fontSize: 54, fontWeight: 700, color: accent }, '{ }')]
   );
 
   return h(
@@ -107,16 +111,16 @@ function card({ accent, iconName, eyebrow, title, sub }) {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
+      position: 'relative',
       width: '100%',
       height: '100%',
-      padding: 90,
+      padding: '84px 90px',
       background: BG,
-      backgroundImage: `radial-gradient(900px 460px at 88% -12%, ${hexToRgba(accent, 0.22)}, transparent)`,
       color: TEXT,
       fontFamily: 'Inter',
     },
     [
-      // top accent rule
+      // left blaze edge — the trail colour, exactly where the path lives
       h(
         'div',
         {
@@ -124,44 +128,37 @@ function card({ accent, iconName, eyebrow, title, sub }) {
           position: 'absolute',
           top: 0,
           left: 0,
-          width: 1200,
-          height: 12,
+          width: 12,
+          height: 630,
           background: accent,
         },
         []
       ),
       // brand
-      h(
-        'div',
-        {
-          display: 'flex',
-          alignItems: 'center',
-          gap: 16,
-          fontSize: 30,
-          fontWeight: 700,
-          color: TEXT,
-        },
-        [
-          h(
-            'div',
-            {
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: 46,
-              height: 46,
-              borderRadius: 12,
-              fontSize: 26,
-              fontWeight: 800,
-              color: accent,
-              background: hexToRgba(accent, 0.14),
-              border: `1px solid ${hexToRgba(accent, 0.3)}`,
-            },
-            '{ }'
-          ),
-          h('div', { display: 'flex' }, 'majland.de'),
-        ]
-      ),
+      h('div', { display: 'flex', alignItems: 'center', gap: 16, fontSize: 30 }, [
+        h(
+          'div',
+          {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 46,
+            height: 46,
+            borderRadius: 12,
+            fontSize: 26,
+            fontWeight: 700,
+            color: BRAND,
+            background: hexToRgba(BRAND, 0.14),
+            border: `1px solid ${hexToRgba(BRAND, 0.32)}`,
+          },
+          '{ }'
+        ),
+        h(
+          'div',
+          { display: 'flex', fontFamily: 'Fraunces', fontWeight: 600, color: TEXT },
+          'majland.de'
+        ),
+      ]),
       // middle block
       h('div', { display: 'flex', flexDirection: 'column' }, [
         chip,
@@ -169,12 +166,12 @@ function card({ accent, iconName, eyebrow, title, sub }) {
           'div',
           {
             display: 'flex',
-            fontSize: 24,
+            fontSize: 23,
             fontWeight: 700,
             letterSpacing: 3,
             textTransform: 'uppercase',
             color: accent,
-            marginBottom: 18,
+            marginBottom: 20,
           },
           eyebrow
         ),
@@ -182,17 +179,19 @@ function card({ accent, iconName, eyebrow, title, sub }) {
           'div',
           {
             display: 'flex',
-            fontSize: 74,
-            fontWeight: 800,
-            lineHeight: 1.05,
-            letterSpacing: -1.5,
-            maxWidth: 940,
+            fontFamily: 'Fraunces',
+            fontSize: 78,
+            fontWeight: 600,
+            lineHeight: 1.04,
+            letterSpacing: -1,
+            color: TEXT,
+            maxWidth: 980,
           },
           title
         ),
         h(
           'div',
-          { display: 'flex', fontSize: 34, color: MUTED, marginTop: 20, maxWidth: 940 },
+          { display: 'flex', fontSize: 33, color: MUTED, marginTop: 22, maxWidth: 900 },
           sub
         ),
       ]),
@@ -203,12 +202,16 @@ function card({ accent, iconName, eyebrow, title, sub }) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          fontSize: 26,
+          fontSize: 25,
           color: MUTED,
         },
         [
           h('div', { display: 'flex', gap: 12, color: TEXT, fontWeight: 700 }, 'EN · DE · DA'),
-          h('div', { display: 'flex' }, 'free · curated · open'),
+          h(
+            'div',
+            { display: 'flex', color: BRAND, fontWeight: 700, letterSpacing: 1 },
+            'free · curated · open'
+          ),
         ]
       ),
     ]
