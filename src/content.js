@@ -37,17 +37,17 @@ export const SITE = (function () {
       da: 'Kuraterede forløb til at bygge software.',
     },
     hero_lead: {
-      en: 'No paywalls, no overwhelm. Pick a path, follow it step by step, and learn from the best free courses on the internet.',
-      de: 'Keine Bezahlschranken, keine Überforderung. Such dir einen Lernweg aus, geh ihn Schritt für Schritt und lerne mit den besten kostenlosen Kursen im Netz.',
-      da: 'Ingen betalingsmure og intet at drukne i. Vælg et forløb, tag det skridt for skridt, og lær fra de bedste gratis kurser på nettet.',
+      en: 'Pick a path, follow it step by step, and learn from the best free courses on the web. No paywalls, no noise.',
+      de: 'Wähl einen Lernweg und geh ihn Schritt für Schritt – mit den besten kostenlosen Kursen im Netz. Keine Bezahlschranken, kein Ballast.',
+      da: 'Vælg et forløb, og følg det skridt for skridt – med de bedste gratis kurser på nettet. Ingen betalingsmure, intet overflødigt.',
     },
     hero_cta: { en: 'Choose your path', de: 'Wähle deinen Lernweg', da: 'Vælg dit forløb' },
 
     choose_title: { en: 'Choose your path', de: 'Wähle deinen Lernweg', da: 'Vælg dit forløb' },
     choose_lead: {
-      en: 'Five focused paths. Start anywhere — or follow the suggested order below.',
-      de: 'Fünf fokussierte Lernwege. Fang an, wo du willst – oder folge der empfohlenen Reihenfolge weiter unten.',
-      da: 'Fem fokuserede forløb. Begynd hvor du vil – eller følg den anbefalede rækkefølge længere nede.',
+      en: 'Four focused paths. Start anywhere, or follow the order below.',
+      de: 'Vier fokussierte Lernwege. Fang an, wo du willst – oder folge der Reihenfolge unten.',
+      da: 'Fire fokuserede forløb. Begynd hvor du vil – eller følg rækkefølgen nedenfor.',
     },
     continue_title: {
       en: 'Pick up where you left off',
@@ -58,9 +58,9 @@ export const SITE = (function () {
 
     new_here: { en: 'New here?', de: 'Neu hier?', da: 'Ny her?' },
     new_here_text: {
-      en: 'A good order is Tools → Foundations → The Web → Full-Stack → AI. But any path is a fine place to begin.',
-      de: 'Eine gute Reihenfolge: Werkzeuge → Grundlagen → Das Web → Full-Stack → KI. Aber jeder Lernweg ist ein guter Anfang.',
-      da: 'En god rækkefølge: Værktøjer → Fundament → Nettet → Full-stack → AI. Men ethvert forløb er et fint sted at starte.',
+      en: 'A good order: Tools → Foundations → The Web → Full-Stack. But any path is a fine place to start.',
+      de: 'Eine gute Reihenfolge: Werkzeuge → Grundlagen → Das Web → Full-Stack. Aber jeder Lernweg ist ein guter Anfang.',
+      da: 'En god rækkefølge: Værktøjer → Fundament → Nettet → Full-stack. Men ethvert forløb er et fint sted at starte.',
     },
 
     level_label: { en: 'Level', de: 'Niveau', da: 'Niveau' },
@@ -88,9 +88,9 @@ export const SITE = (function () {
 
     reference_title: { en: 'Reference shelf', de: 'Nachschlagewerke', da: 'Opslagsværker' },
     reference_lead: {
-      en: 'Bookmark these and look things up constantly — knowing where to find the answer is a skill in itself.',
-      de: 'Setze Lesezeichen und schlag ständig nach – zu wissen, wo die Antwort steht, ist selbst schon eine Fähigkeit.',
-      da: 'Sæt bogmærker, og slå op igen og igen – at vide, hvor svaret står, er en færdighed i sig selv.',
+      en: 'Bookmark these. Knowing where to look things up is a skill in itself.',
+      de: 'Setz Lesezeichen. Zu wissen, wo die Antwort steht, ist selbst schon eine Fähigkeit.',
+      da: 'Sæt bogmærker. At vide, hvor man slår op, er en færdighed i sig selv.',
     },
 
     method_title: {
@@ -154,18 +154,6 @@ export const SITE = (function () {
         da: 'Lidt, men stabilt vinder. Vend tilbage til de svære ting en uge senere – det er anden gang, det sætter sig.',
       },
     },
-    {
-      t: {
-        en: 'Type every line yourself.',
-        de: 'Tippe jede Zeile selbst ab.',
-        da: 'Skriv hver linje selv.',
-      },
-      d: {
-        en: "Don't copy-paste the examples — typing them, and fixing your typos, is where it sinks in.",
-        de: 'Kopiere die Beispiele nicht per Copy-Paste. Erst beim Selbsttippen – Tippfehler inklusive – bleibt es wirklich hängen.',
-        da: 'Lad være med at copy-paste eksemplerne. Det er, når du selv skriver dem – tastefejl og det hele – at det sætter sig.',
-      },
-    },
   ];
 
   /* ---------- Reference shelf ---------- */
@@ -200,16 +188,6 @@ export const SITE = (function () {
         da: 'Opslagsværket til TypeScript – sprog og konfiguration.',
       },
     },
-    {
-      name: 'web.dev',
-      url: 'https://web.dev/learn',
-      host: 'web.dev',
-      d: {
-        en: 'Guidance on accessibility, performance and responsive design.',
-        de: 'Leitfäden zu Barrierefreiheit, Performance und responsivem Design.',
-        da: 'Vejledning i tilgængelighed, ydeevne og responsivt design.',
-      },
-    },
   ];
 
   /* ---------- Learning paths ---------- */
@@ -220,9 +198,9 @@ export const SITE = (function () {
       icon: 'blocks',
       title: { en: 'Foundations', de: 'Grundlagen', da: 'Fundament' },
       tagline: {
-        en: 'Understand how computers and code really work.',
-        de: 'Verstehe, wie Computer und Code wirklich funktionieren.',
-        da: 'Forstå, hvordan computere og kode virkelig fungerer.',
+        en: 'How computers and code actually work.',
+        de: 'Wie Computer und Code wirklich funktionieren.',
+        da: 'Hvordan computere og kode faktisk virker.',
       },
       level: {
         en: 'Beginner → Intermediate',
@@ -230,19 +208,19 @@ export const SITE = (function () {
         da: 'Begynder → Øvet',
       },
       who: {
-        en: 'Total beginners, and anyone who wants real computer-science depth.',
-        de: 'Für komplette Anfänger – und alle, die echte Informatik-Tiefe wollen.',
-        da: 'For helt nye – og alle, der vil have rigtig dybde i datalogi.',
+        en: 'Total beginners — and anyone who wants real depth.',
+        de: 'Komplette Anfänger – und alle, die echte Tiefe wollen.',
+        da: 'Helt nye – og alle, der vil have rigtig dybde.',
       },
       intro: {
-        en: 'Start at the very bottom — logic, data, memory, algorithms — and build the problem-solving instincts everything else depends on.',
+        en: 'Start at the bottom — logic, data, memory, algorithms — and build the problem-solving instincts everything else rests on.',
         de: 'Fang ganz unten an – Logik, Daten, Speicher, Algorithmen – und entwickle das Gespür fürs Problemlösen, auf dem alles andere aufbaut.',
-        da: 'Start helt nede fra bunden – logik, data, hukommelse, algoritmer – og opbyg den sans for problemløsning, som alt andet hviler på.',
+        da: 'Begynd nedefra – logik, data, hukommelse, algoritmer – og opbyg den sans for problemløsning, som alt andet hviler på.',
       },
       outcome: {
-        en: 'You can break a problem into steps and solve it in code — and you understand what’s happening under the hood.',
-        de: 'Du kannst ein Problem in einzelne Schritte zerlegen und in Code lösen – und verstehst, was unter der Haube passiert.',
-        da: 'Du kan dele et problem op i trin og løse det i kode – og du forstår, hvad der foregår under motorhjelmen.',
+        en: 'You can break a problem into steps and solve it in code — and know what’s going on underneath.',
+        de: 'Du kannst ein Problem in Schritte zerlegen und in Code lösen – und weißt, was darunter passiert.',
+        da: 'Du kan dele et problem op i trin og løse det i kode – og ved, hvad der foregår nedenunder.',
       },
       next: 'web',
       steps: [
@@ -252,31 +230,9 @@ export const SITE = (function () {
           provider: 'HarvardX',
           type: 'course',
           blurb: {
-            en: 'The most loved intro to programming there is: C, Python, algorithms, and how computers think.',
-            de: 'Die beliebteste Programmier-Einführung überhaupt: C, Python, Algorithmen – und wie Computer eigentlich denken.',
-            da: 'Den mest elskede introduktion til programmering, der findes: C, Python, algoritmer – og hvordan computere egentlig tænker.',
-          },
-        },
-        {
-          name: 'CS61A — Structure and Interpretation of Programs',
-          url: 'https://cs61a.org/',
-          provider: 'UC Berkeley',
-          type: 'course',
-          blurb: {
-            en: 'The big ideas of programming: abstraction, recursion, and even building your own interpreter.',
-            de: 'Die großen Ideen des Programmierens: Abstraktion, Rekursion – und sogar dein eigener Interpreter.',
-            da: 'De store idéer i programmering: abstraktion, rekursion – og endda din egen fortolker.',
-          },
-        },
-        {
-          name: 'MIT 6.006 — Introduction to Algorithms',
-          url: 'https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/',
-          provider: 'MIT OCW',
-          type: 'course',
-          blurb: {
-            en: 'Data structures, sorting, graphs, and the complexity analysis to reason about them.',
-            de: 'Datenstrukturen, Sortieren, Graphen – und die Komplexitätsanalyse, um sie zu durchschauen.',
-            da: 'Datastrukturer, sortering, grafer – og kompleksitetsanalysen til at gennemskue dem.',
+            en: 'The best-loved intro to programming: C, Python, algorithms, and how computers really think.',
+            de: 'Die beliebteste Programmier-Einführung: C, Python, Algorithmen – und wie Computer wirklich denken.',
+            da: 'Den mest elskede intro til programmering: C, Python, algoritmer – og hvordan computere virkelig tænker.',
           },
         },
       ],
@@ -287,9 +243,9 @@ export const SITE = (function () {
       icon: 'globe',
       title: { en: 'The Web', de: 'Das Web', da: 'Nettet' },
       tagline: {
-        en: 'Build for the browser with HTML, CSS and JavaScript.',
-        de: 'Bau für den Browser – mit HTML, CSS und JavaScript.',
-        da: 'Byg til browseren – med HTML, CSS og JavaScript.',
+        en: 'Build for the browser: HTML, CSS and JavaScript.',
+        de: 'Bau für den Browser: HTML, CSS und JavaScript.',
+        da: 'Byg til browseren: HTML, CSS og JavaScript.',
       },
       level: {
         en: 'Beginner → Intermediate',
@@ -302,9 +258,9 @@ export const SITE = (function () {
         da: 'For alle, der vil bygge hjemmesider og web-apps.',
       },
       intro: {
-        en: 'Learn the three languages of the web — structure, style and behaviour — and how to make pages that are fast, responsive and accessible to everyone.',
-        de: 'Lerne die drei Sprachen des Webs – Struktur, Stil und Verhalten – und wie du Seiten baust, die schnell, responsiv und für alle zugänglich sind.',
-        da: 'Lær nettets tre sprog – struktur, stil og adfærd – og hvordan du laver sider, der er hurtige, responsive og tilgængelige for alle.',
+        en: 'Learn the web’s three languages — structure, style and behaviour — and build pages that are fast, responsive and accessible.',
+        de: 'Lerne die drei Sprachen des Webs – Struktur, Stil und Verhalten – und bau Seiten, die schnell, responsiv und für alle zugänglich sind.',
+        da: 'Lær nettets tre sprog – struktur, stil og adfærd – og byg sider, der er hurtige, responsive og tilgængelige.',
       },
       outcome: {
         en: 'You can build an interactive, responsive website from a blank file.',
@@ -319,9 +275,9 @@ export const SITE = (function () {
           provider: 'Google',
           type: 'course',
           blurb: {
-            en: 'Structured courses on HTML, CSS, accessibility, responsive design and performance.',
-            de: 'Strukturierte Kurse zu HTML, CSS, Barrierefreiheit, responsivem Design und Performance.',
-            da: 'Strukturerede kurser i HTML, CSS, tilgængelighed, responsivt design og ydeevne.',
+            en: 'Structured courses on HTML, CSS, responsive design, accessibility and performance.',
+            de: 'Strukturierte Kurse zu HTML, CSS, responsivem Design, Barrierefreiheit und Performance.',
+            da: 'Strukturerede kurser i HTML, CSS, responsivt design, tilgængelighed og ydeevne.',
           },
         },
         {
@@ -335,17 +291,6 @@ export const SITE = (function () {
             da: 'Den klareste vej fra JavaScript-grundlaget til async, moduler og DOM’en.',
           },
         },
-        {
-          name: 'MDN Web Docs',
-          url: 'https://developer.mozilla.org/en-US/',
-          provider: 'Mozilla',
-          type: 'reference',
-          blurb: {
-            en: 'The web’s definitive reference — keep it open in a tab while you work.',
-            de: 'Das maßgebliche Nachschlagewerk fürs Web – halt es beim Arbeiten in einem Tab offen.',
-            da: 'Nettets definitive opslagsværk – hold det åbent i en fane, mens du arbejder.',
-          },
-        },
       ],
     },
     {
@@ -354,18 +299,18 @@ export const SITE = (function () {
       icon: 'layers',
       title: { en: 'Full-Stack', de: 'Full-Stack', da: 'Full-stack' },
       tagline: {
-        en: 'Design, build and ship complete applications.',
-        de: 'Entwirf, baue und veröffentliche komplette Anwendungen.',
-        da: 'Design, byg og udgiv komplette applikationer.',
+        en: 'Design, build and ship complete apps.',
+        de: 'Entwirf, baue und veröffentliche komplette Apps.',
+        da: 'Design, byg og udgiv komplette apps.',
       },
       level: { en: 'Intermediate', de: 'Fortgeschritten', da: 'Øvet' },
       who: {
-        en: 'Developers past the basics, ready to build real, deployable apps.',
-        de: 'Für alle über die Grundlagen hinaus, bereit für echte Apps, die online gehen.',
-        da: 'For dig, der er ud over det grundlæggende og klar til rigtige apps, der kan sættes i drift.',
+        en: 'Past the basics and ready to build real, deployable apps.',
+        de: 'Über die Grundlagen hinaus und bereit für echte Apps, die online gehen.',
+        da: 'Ud over det grundlæggende og klar til rigtige apps, der kan sættes i drift.',
       },
       intro: {
-        en: 'Tie the front-end and back-end together: a UI people use, an API you control, a database, types, and a real deployment.',
+        en: 'Tie front-end and back-end together: a UI people use, an API you control, a database, types and a real deployment.',
         de: 'Bring Frontend und Backend zusammen: eine Oberfläche, die Leute nutzen, eine API, die du kontrollierst, eine Datenbank, Typen und ein echtes Deployment.',
         da: 'Få frontend og backend til at spille sammen: en brugerflade, folk bruger, en API, du styrer, en database, typer og en rigtig udrulning.',
       },
@@ -374,7 +319,6 @@ export const SITE = (function () {
         de: 'Du kannst eine Full-Stack-App von vorn bis hinten entwerfen, bauen und veröffentlichen.',
         da: 'Du kan designe, bygge og udgive en full-stack-app fra ende til anden.',
       },
-      next: 'ai',
       steps: [
         {
           name: 'Full Stack Open',
@@ -382,31 +326,9 @@ export const SITE = (function () {
           provider: 'University of Helsinki',
           type: 'course',
           blurb: {
-            en: 'React, Node, databases, GraphQL, TypeScript and testing — one real project throughout.',
-            de: 'React, Node, Datenbanken, GraphQL, TypeScript und Tests – durchgehend an einem echten Projekt.',
-            da: 'React, Node, databaser, GraphQL, TypeScript og test – ét rigtigt projekt hele vejen.',
-          },
-        },
-        {
-          name: 'TypeScript Handbook',
-          url: 'https://www.typescriptlang.org/docs/handbook/',
-          provider: 'Microsoft',
-          type: 'reference',
-          blurb: {
-            en: 'Add a type system to JavaScript for safer, more maintainable apps.',
-            de: 'Gib JavaScript ein Typsystem – für sicherere Apps, die leichter zu pflegen sind.',
-            da: 'Giv JavaScript et typesystem – for sikrere apps, der er lettere at vedligeholde.',
-          },
-        },
-        {
-          name: 'CS50 Web — Python & JavaScript',
-          url: 'https://cs50.harvard.edu/web/',
-          provider: 'HarvardX',
-          type: 'course',
-          blurb: {
-            en: 'A second take, with a Python/Django back-end, testing and deployment.',
-            de: 'Eine zweite Perspektive – mit Python/Django-Backend, Tests und Deployment.',
-            da: 'En anden vinkel – med en Python/Django-backend, test og udrulning.',
+            en: 'React, Node, databases, GraphQL, TypeScript and testing — all in one real project.',
+            de: 'React, Node, Datenbanken, GraphQL, TypeScript und Tests – alles in einem echten Projekt.',
+            da: 'React, Node, databaser, GraphQL, TypeScript og test – det hele i ét rigtigt projekt.',
           },
         },
       ],
@@ -432,9 +354,9 @@ export const SITE = (function () {
         da: 'For alle – jo før, jo bedre.',
       },
       intro: {
-        en: 'The practical skills no course teaches directly: the command line, version control, and the everyday workflow that makes all the other work faster.',
-        de: 'Die praktischen Fähigkeiten, die dir kein Kurs direkt beibringt: die Kommandozeile, Versionskontrolle und der Alltags-Workflow, der alles andere schneller macht.',
-        da: 'De praktiske færdigheder, intet kursus lærer dig direkte: kommandolinjen, versionsstyring og den daglige arbejdsgang, der gør alt det andet hurtigere.',
+        en: 'The skills no course teaches directly: the command line, version control, and the everyday workflow that makes everything else faster.',
+        de: 'Die Fähigkeiten, die dir kein Kurs direkt beibringt: Kommandozeile, Versionskontrolle und der Workflow, der alles andere schneller macht.',
+        da: 'Færdighederne, intet kursus lærer dig direkte: kommandolinjen, versionsstyring og arbejdsgangen, der gør alt andet hurtigere.',
       },
       outcome: {
         en: 'You’re at home in the terminal and confident with Git and GitHub.',
@@ -455,17 +377,6 @@ export const SITE = (function () {
           },
         },
         {
-          name: 'GitHub Skills',
-          url: 'https://learn.github.com/skills',
-          provider: 'GitHub',
-          type: 'course',
-          blurb: {
-            en: 'Hands-on, interactive practice with Git, branches and pull requests.',
-            de: 'Praktische, interaktive Übungen zu Git, Branches und Pull Requests.',
-            da: 'Praktisk, interaktiv træning i Git, branches og pull requests.',
-          },
-        },
-        {
           name: 'Pro Git',
           url: 'https://git-scm.com/book/en/v2',
           provider: 'git-scm.com',
@@ -474,68 +385,6 @@ export const SITE = (function () {
             en: 'The free, official Git book — from everyday commands to how Git really works underneath.',
             de: 'Das kostenlose, offizielle Git-Buch – von den alltäglichen Befehlen bis dahin, wie Git wirklich funktioniert.',
             da: 'Den gratis, officielle Git-bog – fra de daglige kommandoer til, hvordan Git virkelig fungerer indeni.',
-          },
-        },
-      ],
-    },
-    {
-      id: 'ai',
-      accent: 'pink',
-      icon: 'spark',
-      title: { en: 'Build with AI', de: 'Mit KI bauen', da: 'Byg med AI' },
-      tagline: {
-        en: 'Add large language models to what you build.',
-        de: 'Bring große Sprachmodelle in deine Projekte.',
-        da: 'Føj store sprogmodeller til det, du bygger.',
-      },
-      level: { en: 'Intermediate', de: 'Fortgeschritten', da: 'Øvet' },
-      who: {
-        en: 'Developers who can build, and want to build with AI.',
-        de: 'Für alle, die schon bauen können – und es jetzt mit KI tun wollen.',
-        da: 'For dig, der allerede kan bygge – og nu vil gøre det med AI.',
-      },
-      intro: {
-        en: 'Once you can ship apps, learn to weave in language models — prompting, the API, tool use and agents — and where AI helps versus where it doesn’t.',
-        de: 'Wenn du Apps veröffentlichen kannst, lerne, Sprachmodelle einzubauen – Prompting, die API, Tool-Nutzung und Agenten – und wo KI hilft und wo nicht.',
-        da: 'Når du kan udgive apps, så lær at bygge sprogmodeller ind – prompting, API’en, brug af værktøjer og agenter – og hvor AI hjælper, og hvor den ikke gør.',
-      },
-      outcome: {
-        en: 'You can integrate an LLM into a real app and design prompts that reliably work.',
-        de: 'Du kannst ein LLM in eine echte App einbauen und Prompts schreiben, die zuverlässig funktionieren.',
-        da: 'Du kan bygge en LLM ind i en rigtig app og skrive prompts, der virker pålideligt.',
-      },
-      steps: [
-        {
-          name: 'Anthropic Academy',
-          url: 'https://anthropic.skilljar.com/',
-          provider: 'Anthropic',
-          type: 'course',
-          blurb: {
-            en: 'Prompt engineering, the Claude API, tool use and building agents — straight from the source.',
-            de: 'Prompt-Engineering, die Claude-API, Tool-Nutzung und der Bau von Agenten – direkt von der Quelle.',
-            da: 'Prompt engineering, Claude-API’en, brug af værktøjer og det at bygge agenter – direkte fra kilden.',
-          },
-        },
-        {
-          name: 'Generative AI for Beginners',
-          url: 'https://microsoft.github.io/generative-ai-for-beginners/',
-          provider: 'Microsoft',
-          type: 'course',
-          blurb: {
-            en: 'Hands-on lessons on building with LLMs — prompting, RAG, function calling and agents.',
-            de: 'Praktische Lektionen zum Bauen mit LLMs – Prompting, RAG, Function Calling und Agenten.',
-            da: 'Praktiske lektioner i at bygge med LLM’er – prompting, RAG, function calling og agenter.',
-          },
-        },
-        {
-          name: 'Prompt Engineering Guide',
-          url: 'https://www.promptingguide.ai/',
-          provider: 'DAIR.AI',
-          type: 'reference',
-          blurb: {
-            en: 'A thorough, up-to-date reference on prompting — few-shot, chain-of-thought, RAG and agents.',
-            de: 'Ein gründliches, aktuelles Nachschlagewerk zum Prompting – Few-Shot, Chain-of-Thought, RAG und Agenten.',
-            da: 'Et grundigt, opdateret opslagsværk om prompting – few-shot, chain-of-thought, RAG og agenter.',
           },
         },
       ],

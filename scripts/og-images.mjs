@@ -33,7 +33,6 @@ const ACCENTS = {
   cyan: '#56d2e6',
   emerald: '#54d699',
   amber: '#ecae5a',
-  pink: '#f08fc4',
 };
 const DEFAULT_ACCENT = '#8b93ff';
 

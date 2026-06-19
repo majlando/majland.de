@@ -1,22 +1,23 @@
 # majland.de — a free learning hub
 
 A small, fast, **trilingual** learning hub. It turns the best free courses on the
-internet into **five focused paths** — and lets anyone follow them step by step,
+internet into **four focused paths** — and lets anyone follow them step by step,
 in **English, German, or Danish**.
 
 > Curated paths to learn software · Kuratierte Lernwege, um Software zu bauen · Kuraterede forløb til at bygge software
 
 🔗 **Live:** https://majland.de
 
-## The five paths
+## The four paths
 
-| Path                 | Covers                    | Core resources                          |
-| -------------------- | ------------------------- | --------------------------------------- |
-| **Foundations**      | How computers & code work | CS50x · CS61A · MIT 6.006               |
-| **The Web**          | HTML, CSS, JavaScript     | web.dev · javascript.info · MDN         |
-| **Full-Stack**       | Build & ship real apps    | Full Stack Open · TypeScript · CS50 Web |
-| **Tools & Workflow** | Terminal, Git, workflow   | MIT Missing Semester · GitHub Skills    |
-| **Build with AI**    | LLMs in your apps         | Anthropic Academy                       |
+In suggested order — but start anywhere:
+
+| Path                 | Covers                    | Core resources             |
+| -------------------- | ------------------------- | -------------------------- |
+| **Tools & Workflow** | Terminal, Git, workflow   | Missing Semester · Pro Git |
+| **Foundations**      | How computers & code work | CS50x                      |
+| **The Web**          | HTML, CSS, JavaScript     | web.dev · javascript.info  |
+| **Full-Stack**       | Build & ship real apps    | Full Stack Open            |
 
 ## Tech
 
@@ -72,7 +73,7 @@ is generated too.
 ```bash
 npm install        # once
 npm run dev        # dev server (http://localhost:5173) with history routing
-npm run build      # check:i18n + vite build + pre-render → dist/ (18 pages + sitemap + 404)
+npm run build      # check:i18n + vite build + pre-render → dist/ (15 pages + sitemap + 404)
 npm run preview    # serve the built dist/ locally
 npm run check:i18n # fail if any string is missing en/de/da (also runs in build + CI)
 npm run check:links # ping every course/reference URL; flags dead links

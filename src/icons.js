@@ -10,8 +10,6 @@ export const ICONS = {
     '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 21 8l-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg>',
   terminal:
     '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="m7 9 3 3-3 3M13 15h4"/></svg>',
-  spark:
-    '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3c.7 4.8 1.9 6 6.7 6.7C13.9 10.4 12.7 11.6 12 16.4 11.3 11.6 10.1 10.4 5.3 9.7 10.1 9 11.3 7.8 12 3Z"/><path d="M18.7 15c.3 2.1.8 2.6 2.9 2.9-2.1.3-2.6.8-2.9 2.9-.3-2.1-.8-2.6-2.9-2.9 2.1-.3 2.6-.8 2.9-2.9Z"/></svg>',
   compass:
     '<svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 4.8L8.5 15.5l2.2-4.8 4.8-2.2Z"/></svg>',
   arrow:

@@ -138,7 +138,7 @@ function breadcrumbLd(route, lang) {
 function rewriteHeader(html, route, lang) {
   const navHref = (nav) => (nav === 'home' ? homeURL(BASE, lang) : homeURL(BASE, lang) + '#' + nav);
   html = html.replace(
-    /data-nav="(home|reference|method)" href="[^"]*"/g,
+    /data-nav="(home|reference|method|choose)" href="[^"]*"/g,
     (_, nav) => `data-nav="${nav}" href="${navHref(nav)}"`
   );
   html = html.replace(/<a data-langlink="(en|de|da)"[^>]*>/g, (_, L) => {

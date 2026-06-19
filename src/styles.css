@@ -90,12 +90,6 @@
 [data-theme='dark'] [data-accent='amber'] {
   --pa: #ecae5a;
 }
-[data-accent='pink'] {
-  --pa: #c14a92;
-}
-[data-theme='dark'] [data-accent='pink'] {
-  --pa: #f08fc4;
-}
 :root,
 [data-theme] {
   --pa: var(--accent);
